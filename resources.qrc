@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>images/fullscreen.png</file>
+        <file>images/pause.png</file>
+        <file>images/play.png</file>
+        <file>images/stop.png</file>
+        <file>images/endo_1.png</file>
+        <file>images/endo_3.png</file>
+        <file>images/endo-calib_0.png</file>
+        <file>images/endo-calib_1.png</file>
+        <file>images/endo-calib_2.png</file>
+        <file>images/endo-calib_3.png</file>
+        <file>images/endo-calib_4.png</file>
+        <file>images/endo-calib_5.png</file>
+        <file>images/endo-calib_6.png</file>
+        <file>images/endo-calib_7.png</file>
+        <file>images/endo-calib_8.png</file>
+        <file>images/endo-calib_9.png</file>
+        <file>images/endo-calib_10.png</file>
+        <file>images/endo-calib_11.png</file>
+        <file>images/endo-calib_12.png</file>
+        <file>images/endo.jpg</file>
+        <file>images/endo.png</file>
+        <file>images/FullscreenT.png</file>
+        <file>images/PauseT.png</file>
+        <file>images/Refresh.png</file>
+        <file>images/StartT.png</file>
+        <file>images/StopT.png</file>
+    </qresource>
+    <qresource prefix="/"/>
+</RCC>

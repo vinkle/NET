@@ -1,0 +1,15 @@
+Bounding Rect,84,180,948,664
+Pegs Rect,168,700,80,60
+Pegs Rect,408,708,80,60
+Pegs Rect,644,724,80,60
+Pegs Rect,892,728,80,60
+Pegs Rect,216,504,80,60
+Pegs Rect,428,516,80,60
+Pegs Rect,664,520,80,60
+Pegs Rect,872,544,80,60
+Pegs Rect,252,344,80,60
+Pegs Rect,452,348,80,60
+Pegs Rect,676,344,80,60
+Pegs Rect,864,376,80,60
+Threshold Ring,17
+Threshold Tool,64
