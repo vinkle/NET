@@ -60,7 +60,9 @@ settings_main::settings_main(QWidget *parent) :
     mSettings->setDB(endoDB);
     if(!endoDB.isOpen())
     {
-        QMessageBox::critical(this, tr("Error"), "Database Error !!!");
+        QMessageBox::critical(this, tr("Error"), "<pre>Database Error. Please make sure that Rasberry-PI is turned on. "
+                                                 "If the problem persists call admin (+91-7827078568).Exiting the application </pre>");
+        QApplication::instance()->exit();
     }
 
     ui->txtDetails->setText(QDate::currentDate().toString());

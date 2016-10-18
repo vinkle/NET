@@ -26,6 +26,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QTreeView>
+#include <QTime>
 #include "showresult.h"
 #include <QStandardItemModel>
 
@@ -65,6 +66,7 @@ private slots:
     void on_action_Horizontal_Flip_triggered(bool checked);
 
     void updateScreen(const myMat &);
+    void updateStatus(const QString & trackingMsg);
 
     void on_actionQuit_triggered();
 
@@ -155,7 +157,9 @@ private:
     QString emailID;
     bool resultQry;
     string ResultString;
-
+    QTime startTime;
+    int TotalTimeinMs;
+    bool sendtoDB;
 protected:
     //void timerEvent(QTimerEvent *event);
 };

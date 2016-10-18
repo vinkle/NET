@@ -41,6 +41,7 @@ qMainWindow::qMainWindow(/*settings_main &obj, */const params &par, string type,
     thresh_tool(thresh_tool)
     {
         TotalTimeinMs = 15*60*1000;
+        sendtoDB = false;
         camState = true;
         // serial port settings and stuff
         serial = new QSerialPort(this);
@@ -218,6 +219,7 @@ void qMainWindow::updateStatus(const QString & trackingMsg)
     ui->statusBar->showMessage(msg);
     if(timeRemain <= 0)
     {
+        sendtoDB = true;
         ui->statusBar->showMessage("Time finished. Wait for the processing of the result");
         on_actionStop_2_triggered();
     }
@@ -288,40 +290,43 @@ void qMainWindow::saveData()
     ResultString = result.write(Activity_Data);
     Activity_Data.close();
 
-    if(!endoDB.open())
+    if(sendtoDB)
     {
-        if(!endoDB.isOpen())
+        if(!endoDB.open())
         {
-            QMessageBox::critical(this, tr("Error"), "Database Error !!!");
-            return;
+            if(!endoDB.isOpen())
+            {
+                QMessageBox::critical(this, tr("Error"), "Database Error !!!");
+                return;
+            }
         }
+        QSqlQuery query;
+        query.prepare("INSERT INTO recordDB (EmailID, level, EndoVid, AuxVid, Result, ActivityInfo, ResultInfo, TimeStamp, Type, Details, Score)"
+                      "VALUES (:EmailID, :level, :EndoVid, :AuxVid, :Result, :ActivityInfo, :ResultInfo, :TimeStamp, :Type, :Details, :Score)");
+        query.bindValue(":EmailID", emailID);
+        query.bindValue(":level", level);
+        query.bindValue(":EndoVid", QString::fromStdString(endoFilename));
+        query.bindValue(":AuxVid", QString::fromStdString(auxFilename));
+        query.bindValue(":Result", true);
+        query.bindValue(":ActivityInfo", QString::fromStdString(filenameActivity));
+        query.bindValue(":ResultInfo", QString::fromStdString(ResultString));
+        query.bindValue(":TimeStamp", QString::fromStdString(timestamp));
+        query.bindValue(":Type", QString::fromStdString(type));
+        query.bindValue(":Details", QString::fromStdString(details));
+        query.bindValue(":Score", result.totalScore);
+        resultQry = query.exec();
+        if(!resultQry)
+        {
+            QMessageBox::critical(this, tr("Error"), "DB Error - see the log");
+            qDebug() << "DB error:  " << query.lastError();
+        }
+        sendtoDB = false;
+        ui->statusBar->showMessage("Activity completed and saved in the database");
     }
-    QSqlQuery query;
-    query.prepare("INSERT INTO recordDB (EmailID, level, EndoVid, AuxVid, Result, ActivityInfo, ResultInfo, TimeStamp, Type, Details, Score)"
-                  "VALUES (:EmailID, :level, :EndoVid, :AuxVid, :Result, :ActivityInfo, :ResultInfo, :TimeStamp, :Type, :Details, :Score)");
-    query.bindValue(":EmailID", emailID);
-    query.bindValue(":level", level);
-    query.bindValue(":EndoVid", QString::fromStdString(endoFilename));
-    query.bindValue(":AuxVid", QString::fromStdString(auxFilename));
-    query.bindValue(":Result", true);
-    query.bindValue(":ActivityInfo", QString::fromStdString(filenameActivity));
-    query.bindValue(":ResultInfo", QString::fromStdString(ResultString));
-    query.bindValue(":TimeStamp", QString::fromStdString(timestamp));
-    query.bindValue(":Type", QString::fromStdString(type));
-    query.bindValue(":Details", QString::fromStdString(details));
-    query.bindValue(":Score", result.totalScore);
-    resultQry = query.exec();
-    if(!resultQry)
+    else
     {
-        QMessageBox::critical(this, tr("Error"), "DB Error - see the log");
-        qDebug() << "DB error:  " << query.lastError();
+        ui->statusBar->showMessage("Activity not completed in time. Not saving in the database");
     }
-//    else
-//    {
-//        QMessageBox b;
-//        b.setText("<pre> Summary of the activity is: \n" + QString::fromStdString(resResult) + "</pre>");
-//        b.exec();
-//    }
 }
 
 void qMainWindow::processData()

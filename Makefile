@@ -33,7 +33,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = Neuro-Endo-Trainer1.0.0
-DISTDIR = /home/terminalx/Dropbox/Neuro-Endo-Trainer/.tmp/Neuro-Endo-Trainer1.0.0
+DISTDIR = /home/terminalx/Projects/Neuro-Endo-Trainer/.tmp/Neuro-Endo-Trainer1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-rpath,/home/terminalx/Qt5.7.0/5.7/gcc_64/lib
 LIBS          = $(SUBLIBS) -L/usr/lib -L/usr/local/lib -L/usr/lib/x86_64-linux-gnu/ -L/opt/pylon3/lib64 -L/opt/pylon3/genicam/bin/Linux64_x64 -L/opt/pylon3/genicam/bin/Linux64_x64/GenApi/Generic -lpylonbase -lGenApi_gcc40_v2_3 -lGCBase_gcc40_v2_3 -lLog_gcc40_v2_3 -lMathParser_gcc40_v2_3 -lXerces-C_gcc40_v2_7 -llog4cpp_gcc40_v2_3 -lv4l2 -lv4l2rds -lX11 -lueye_api -lopencv_calib3d -lopencv_contrib -lopencv_core -lopencv_features2d -lopencv_flann -lopencv_highgui -lopencv_imgproc -lopencv_legacy -lopencv_ml -lopencv_nonfree -lopencv_objdetect -lopencv_ocl -lopencv_photo -lopencv_stitching -lopencv_superres -lopencv_ts -lopencv_video -lopencv_videostab -lrt -lm -ldl -L/home/terminalx/Qt5.7.0/5.7/gcc_64/lib -lQt5MultimediaWidgets -L/usr/lib64 -lQt5Multimedia -lQt5OpenGL -lQt5Widgets -lQt5Gui -lQt5Sql -lQt5Network -lQt5SerialPort -lQt5Core -lGL -lpthread 
@@ -1234,7 +1234,7 @@ moc_qmainwindow.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QMainWindow \
 		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qstandarditemmodel.h \
 		qmainwindow.h \
 		../../Qt5.7.0/5.7/gcc_64/bin/moc
-	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include qmainwindow.h -o moc_qmainwindow.cpp
+	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Projects/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include qmainwindow.h -o moc_qmainwindow.cpp
 
 moc_settings_main.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QDialog \
 		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdialog.h \
@@ -1703,7 +1703,7 @@ moc_settings_main.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QDialog \
 		../../Qt5.7.0/5.7/gcc_64/include/QtCore/QDir \
 		settings_main.h \
 		../../Qt5.7.0/5.7/gcc_64/bin/moc
-	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include settings_main.h -o moc_settings_main.cpp
+	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Projects/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include settings_main.h -o moc_settings_main.cpp
 
 moc_settings.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QDialog \
 		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdialog.h \
@@ -1962,7 +1962,7 @@ moc_settings.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QDialog \
 		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qfiledialog.h \
 		settings.h \
 		../../Qt5.7.0/5.7/gcc_64/bin/moc
-	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include settings.h -o moc_settings.cpp
+	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Projects/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include settings.h -o moc_settings.cpp
 
 moc_testBasler.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtCore/QThread \
 		../../Qt5.7.0/5.7/gcc_64/include/QtCore/qthread.h \
@@ -2341,7 +2341,7 @@ moc_testBasler.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtCore/QThread \
 		../../Qt5.7.0/5.7/gcc_64/include/QtSerialPort/qserialportglobal.h \
 		testBasler.h \
 		../../Qt5.7.0/5.7/gcc_64/bin/moc
-	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include testBasler.h -o moc_testBasler.cpp
+	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Projects/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include testBasler.h -o moc_testBasler.cpp
 
 moc_testIDS.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtCore/QThread \
 		../../Qt5.7.0/5.7/gcc_64/include/QtCore/qthread.h \
@@ -2545,7 +2545,7 @@ moc_testIDS.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtCore/QThread \
 		../../Qt5.7.0/5.7/gcc_64/include/QtSerialPort/qserialportglobal.h \
 		testIDS.h \
 		../../Qt5.7.0/5.7/gcc_64/bin/moc
-	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include testIDS.h -o moc_testIDS.cpp
+	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Projects/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include testIDS.h -o moc_testIDS.cpp
 
 moc_testUSB.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtCore/QThread \
 		../../Qt5.7.0/5.7/gcc_64/include/QtCore/qthread.h \
@@ -2766,7 +2766,7 @@ moc_testUSB.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtCore/QThread \
 		../../Qt5.7.0/5.7/gcc_64/include/QtSerialPort/qserialportglobal.h \
 		testUSB.h \
 		../../Qt5.7.0/5.7/gcc_64/bin/moc
-	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include testUSB.h -o moc_testUSB.cpp
+	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Projects/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include testUSB.h -o moc_testUSB.cpp
 
 moc_qtopencvviewergl.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QOpenGLWidget \
 		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qopenglwidget.h \
@@ -2882,7 +2882,7 @@ moc_qtopencvviewergl.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QOpenGLWidg
 		../../Qt5.7.0/5.7/gcc_64/include/QtCore/QScopedPointer \
 		qtopencvviewergl.h \
 		../../Qt5.7.0/5.7/gcc_64/bin/moc
-	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include qtopencvviewergl.h -o moc_qtopencvviewergl.cpp
+	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Projects/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include qtopencvviewergl.h -o moc_qtopencvviewergl.cpp
 
 moc_usbcamrecorddisp.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtCore/QThread \
 		../../Qt5.7.0/5.7/gcc_64/include/QtCore/qthread.h \
@@ -3089,7 +3089,7 @@ moc_usbcamrecorddisp.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtCore/QThread \
 		../../Qt5.7.0/5.7/gcc_64/include/QtCore/QDir \
 		usbcamrecorddisp.h \
 		../../Qt5.7.0/5.7/gcc_64/bin/moc
-	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include usbcamrecorddisp.h -o moc_usbcamrecorddisp.cpp
+	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Projects/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include usbcamrecorddisp.h -o moc_usbcamrecorddisp.cpp
 
 moc_auxCamRecord.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtCore/QThread \
 		../../Qt5.7.0/5.7/gcc_64/include/QtCore/qthread.h \
@@ -3472,7 +3472,7 @@ moc_auxCamRecord.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtCore/QThread \
 		tracker/MedianFlowTracker.h \
 		auxCamRecord.h \
 		../../Qt5.7.0/5.7/gcc_64/bin/moc
-	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include auxCamRecord.h -o moc_auxCamRecord.cpp
+	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Projects/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include auxCamRecord.h -o moc_auxCamRecord.cpp
 
 moc_auxcamgraphicsview.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget \
 		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qwidget.h \
@@ -3592,7 +3592,7 @@ moc_auxcamgraphicsview.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget \
 		../../Qt5.7.0/5.7/gcc_64/include/QtGui/QPainter \
 		auxcamgraphicsview.h \
 		../../Qt5.7.0/5.7/gcc_64/bin/moc
-	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include auxcamgraphicsview.h -o moc_auxcamgraphicsview.cpp
+	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Projects/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include auxcamgraphicsview.h -o moc_auxcamgraphicsview.cpp
 
 moc_treemodel.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtCore/QAbstractItemModel \
 		../../Qt5.7.0/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
@@ -3661,7 +3661,7 @@ moc_treemodel.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtCore/QAbstractItemModel \
 		../../Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
 		treemodel.h \
 		../../Qt5.7.0/5.7/gcc_64/bin/moc
-	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include treemodel.h -o moc_treemodel.cpp
+	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Projects/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include treemodel.h -o moc_treemodel.cpp
 
 moc_showresult.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QDialog \
 		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdialog.h \
@@ -3792,7 +3792,7 @@ moc_showresult.cpp: ../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QDialog \
 		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qfileiconprovider.h \
 		showresult.h \
 		../../Qt5.7.0/5.7/gcc_64/bin/moc
-	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Dropbox/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include showresult.h -o moc_showresult.cpp
+	/home/terminalx/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/terminalx/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/terminalx/Projects/Neuro-Endo-Trainer -I/opt/pylon3/include -I/opt/pylon3/genicam/library/CPP/include -I/usr/local/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimediaWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtMultimedia -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtOpenGL -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSql -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtNetwork -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtSerialPort -I/home/terminalx/Qt5.7.0/5.7/gcc_64/include/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include showresult.h -o moc_showresult.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -4656,67 +4656,6 @@ qmainwindow.o: qmainwindow.cpp ../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qmainw
 		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabwidget.h \
 		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
 		ui_qmainwindow.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreapplication.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtCore/qeventloop.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGridLayout \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgridlayout.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayout.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemview.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtCore/qitemselectionmodel.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyleoption.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractspinbox.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qvalidator.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtCore/qregularexpression.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qslider.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractslider.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstyle.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabbar.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qrubberband.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QMainWindow \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QMenu \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qmenu.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QMenuBar \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qmenubar.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QStatusBar \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstatusbar.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QToolBar \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtoolbar.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget \
-		qtopencvviewergl.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QOpenGLWidget \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qopenglwidget.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/QSurfaceFormat \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qsurfaceformat.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qopengl.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtCore/qt_windows.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qopengles2ext.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qopenglext.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/QOpenGLFunctions_2_0 \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qopenglfunctions_2_0.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/QOpenGLVersionFunctions \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qopenglversionfunctions.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qopenglcontext.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtCore/QObject \
-		../../Qt5.7.0/5.7/gcc_64/include/QtCore/QScopedPointer \
 		../../Qt5.7.0/5.7/gcc_64/include/QtMultimedia/QCameraInfo \
 		../../Qt5.7.0/5.7/gcc_64/include/QtMultimedia/qcamerainfo.h \
 		../../Qt5.7.0/5.7/gcc_64/include/QtMultimedia/qcamera.h \
@@ -5205,58 +5144,6 @@ settings_main.o: settings_main.cpp settings_main.h \
 		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qfiledialog.h \
 		../../Qt5.7.0/5.7/gcc_64/include/QtCore/QDir \
 		ui_settings_main.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QCheckBox \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qcheckbox.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractbutton.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QComboBox \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsView \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsview.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qpainter.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qscrollarea.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGroupBox \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgroupbox.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHBoxLayout \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayout.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgridlayout.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLabel \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlabel.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLineEdit \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlineedit.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qtextcursor.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qtextformat.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QListWidget \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlistwidget.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qpushbutton.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QRadioButton \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qradiobutton.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QSlider \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QStackedWidget \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstackedwidget.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QTabWidget \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QTableView \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtableview.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QVBoxLayout \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget \
-		auxcamgraphicsview.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsSceneMouseEvent \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicssceneevent.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/QMouseEvent \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/QPainter \
 		timeClass.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settings_main.o settings_main.cpp
 
@@ -5517,48 +5404,6 @@ settings.o: settings.cpp settings.h \
 		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QFileDialog \
 		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qfiledialog.h \
 		ui_settings.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QComboBox \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QDialogButtonBox \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGridLayout \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgridlayout.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayout.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGroupBox \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgroupbox.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHBoxLayout \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLabel \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlabel.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QLineEdit \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlineedit.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qtextcursor.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qtextformat.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QPushButton \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qpushbutton.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractbutton.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QStackedWidget \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qstackedwidget.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QTextEdit \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtextedit.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qtextdocument.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QVBoxLayout \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget \
 		../../Qt5.7.0/5.7/gcc_64/include/QtSerialPort/QSerialPortInfo \
 		../../Qt5.7.0/5.7/gcc_64/include/QtSerialPort/qserialportinfo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settings.o settings.cpp
@@ -7917,26 +7762,7 @@ showresult.o: showresult.cpp showresult.h \
 		../../Qt5.7.0/5.7/gcc_64/include/QtCore/qdir.h \
 		../../Qt5.7.0/5.7/gcc_64/include/QtCore/qfileinfo.h \
 		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qfileiconprovider.h \
-		ui_showresult.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qaction.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreapplication.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtCore/qeventloop.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QButtonGroup \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGridLayout \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgridlayout.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayout.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
-		../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h
+		ui_showresult.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o showresult.o showresult.cpp
 
 qrc_resources.o: qrc_resources.cpp 
