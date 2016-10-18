@@ -14,18 +14,18 @@ public:
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    //QPixmap pixmap("endo.png");
-    //QSplashScreen splash(pixmap);
-    //splash.show();
-    //app.processEvents();
-    //I::sleep(1);
+    QPixmap pixmap(":/icons/images/endo.jpg");
+    QSplashScreen splash(pixmap);
+    splash.show();
+    app.processEvents();
+    I::sleep(3);
 
     settings_main settingObj;
     settingObj.setWindowTitle("Neuro-Endo-Trainer");
 //    settingObj.setWindowFlags((Qt::Dialog | Qt::Desktop)); // source of error.
     settingObj.setFixedSize(974, 649);
     settingObj.show();
-    //splash.finish(&settingObj);
+    splash.finish(&settingObj);
 
     return app.exec();
 }
