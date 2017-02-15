@@ -31,14 +31,17 @@ string util::filenameFromPath(const string &path)
 
 void util::mean2D(const vector<pair <double, double > > &data, double *meanX, double *meanY)
 {
-    double sumX = 0; double sumY = 0;
-    for (int i = 0; i < data.size(); ++i)
+    if(data.size())
     {
-        sumX += data[i].first;
-        sumY += data[i].second;
+        double sumX = 0; double sumY = 0;
+        for (int i = 0; i < data.size(); ++i)
+        {
+            sumX += data[i].first;
+            sumY += data[i].second;
+        }
+        *meanX = sumX / (double)data.size();
+        *meanY = sumY / (double)data.size();
     }
-    *meanX = sumX / (double)data.size();
-    *meanY = sumY / (double)data.size();
 }
 void util::max2D(const vector<pair <double, double > > &data, double *maxX, double *maxY)
 {
@@ -69,61 +72,81 @@ void util::normalize2D(const vector<pair <double, double > > &indata, vector<pai
     double meanX = 0; double meanY = 0;
     double maxX = 0; double maxY = 0;
     mean2D(indata, &meanX, &meanY);
-
-    outdata.resize(indata.size());
-    for (int i = 0; i < indata.size(); ++i)
+    if(indata.size())
     {
-        outdata[i].first = (indata[i].first - meanX);
-        outdata[i].second = (indata[i].second - meanY);
-    }
-    max2D(outdata, &maxX, &maxY);
-    for (int i = 0; i < outdata.size(); ++i)
-    {
-        outdata[i].first = (outdata[i].first) / maxX;
-        outdata[i].second = (outdata[i].second) / maxY;
+        outdata.resize(indata.size());
+        for (int i = 0; i < indata.size(); ++i)
+        {
+            outdata[i].first = (indata[i].first - meanX);
+            outdata[i].second = (indata[i].second - meanY);
+        }
+        max2D(outdata, &maxX, &maxY);
+        for (int i = 0; i < outdata.size(); ++i)
+        {
+            if(maxX != 0 && maxY != 0)
+            {
+                outdata[i].first = (outdata[i].first) / maxX;
+                outdata[i].second = (outdata[i].second) / maxY;
+            }
+        }
     }
 }
 
 void util::diff2D(const vector<pair <double, double > > &indata, vector<pair <double, double > > &outdata)
 {
-    outdata.resize(indata.size() - 1);
-    for (int i = 0; i < indata.size()-1; ++i)
+    if(indata.size()-1 > 0)
     {
-        outdata[i].first = indata[i + 1].first - indata[i].first;
-        outdata[i].second = indata[i + 1].second - indata[i].second;
+        outdata.resize(indata.size() - 1);
+        for (int i = 0; i < indata.size()-1; ++i)
+        {
+            outdata[i].first = indata[i + 1].first - indata[i].first;
+            outdata[i].second = indata[i + 1].second - indata[i].second;
+        }
     }
 }
 void util::var2D(const vector<pair <double, double > > &indata, double *varX, double *varY)
 {
-    double meanX = 0; double meanY = 0;
-    double sumX = 0; double sumY = 0;
-    mean2D(indata, &meanX, &meanY);
-    for (int i = 0; i < indata.size(); ++i)
+    if(indata.size() - 1 > 0)
     {
-        sumX += (indata[i].first - meanX) * (indata[i].first - meanX);
-        sumY += (indata[i].second - meanY) * (indata[i].second - meanY);
+        double meanX = 0; double meanY = 0;
+        double sumX = 0; double sumY = 0;
+        mean2D(indata, &meanX, &meanY);
+        for (int i = 0; i < indata.size(); ++i)
+        {
+            sumX += (indata[i].first - meanX) * (indata[i].first - meanX);
+            sumY += (indata[i].second - meanY) * (indata[i].second - meanY);
+        }
+        sumX /= indata.size() - 1;
+        sumY /= indata.size() - 1;
     }
-    sumX /= indata.size() - 1;
-    sumY /= indata.size() - 1;
 }
 void util::curvature(const vector<pair <double, double > > &dx,
     const vector<pair <double, double > > &ddx,
     vector<double> &curvature)
 {
-    curvature.resize(ddx.size());
-    for (int i = 0; i < ddx.size(); ++i)
+    if(ddx.size())
     {
-        curvature[i] = abs((dx[i].first * ddx[i].second) - (dx[i].second * ddx[i].first))
-            / pow(dx[i].first * dx[i].first + dx[i].second * dx[i].second, 1.5);
+        curvature.resize(ddx.size());
+        for (int i = 0; i < ddx.size(); ++i)
+        {
+            double dd = pow(dx[i].first * dx[i].first + dx[i].second * dx[i].second, 1.5);
+            if(dd != 0)
+            {
+                curvature[i] = abs((dx[i].first * ddx[i].second) - (dx[i].second * ddx[i].first)) / dd;
+            }
+        }
     }
 }
 
 void util::arclength(const vector<pair <double, double > > &dx, double *arcLength)
 {
-    *arcLength = 0;
-    for (int i = 0; i < dx.size(); ++i)
+    if(dx.size())
     {
-        *arcLength += pow(dx[i].first * dx[i].first + dx[i].second * dx[i].second, 0.5);
+        *arcLength = 0;
+        for (int i = 0; i < dx.size(); ++i)
+        {
+            *arcLength += pow(dx[i].first * dx[i].first + dx[i].second * dx[i].second, 0.5);
+        }
     }
 }
 void util::curvatureMaxnCount(const vector<double > &curvature, double *curvatureMax, int*curvatureMaxCount)

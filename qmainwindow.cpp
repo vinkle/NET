@@ -442,8 +442,8 @@ void qMainWindow::processData()
         }
     }
     // save the last status also
-    if(activities.size() > 0)
-    {
+//    if(activities.size() > 0)
+//    {
         // remove the bug later. last stationary activity is not considered
 //        if(status != activities[activities.size()-1].type)
 //        {
@@ -468,7 +468,7 @@ void qMainWindow::processData()
 //            }
 //        }
 //        activities.push_back(objActivity);
-    }
+//    }
 
 
     //qDebug() << "processing start - Getting tracking and hitting info\n";
@@ -581,117 +581,135 @@ void qMainWindow::processData()
         }
     }
    qDebug() << "out activity processing\n";
+   if(activities.size())
+   {
 
-    // start processing the activity data and put into result data
-    for(uint p = 0; p < activities.size(); ++p)
-    {
-        Activity act = activities[p];
-        if (act.type == "stationary")
-        {
-            // total time in No-Activity;
-            result.noactivity.no_frames += act.s.endIndex - act.s.startIndex + 1;
-            result.noactivity.time += timeClass::timeSpentinMillis(act.s.startTime, act.s.endTime);
-            // Hitting during No-Activity
-            for(int i = 0; i < act.s.hitting.size(); i++)
-            {
-                if(act.s.hitting[i].second.first > HITTING_THRESHOLD_SENSOR1 && act.s.hitting[i].second.second > HITTING_THRESHOLD_SENSOR2)
-                {
-                    result.hitting.hittingData.push_back(act.s.hitting[i]);
-                }
-            }
-        }
-        else if(act.type == "picking")
-        {
-            result.grasping.NoFramesPicking.push_back(make_pair(act.p.from_peg, (act.p.endIndex-act.p.startIndex+1)));
-            result.grasping.timePicking.push_back(make_pair(act.p.from_peg, (timeClass::timeSpentinMillis(act.p.startTime,act.p.endTime))));
-            for(int i = 0; i < act.p.hitting.size(); i++)
-            {
-                if(act.p.hitting[i].second.first > HITTING_THRESHOLD_SENSOR1 && act.p.hitting[i].second.second > HITTING_THRESHOLD_SENSOR2)
-                {
-                    result.hitting.hittingData.push_back(act.p.hitting[i]);
-                }
-            }
+       // start processing the activity data and put into result data
+       for(uint p = 0; p < activities.size(); ++p)
+       {
+           Activity act = activities[p];
+           if (act.type == "stationary")
+           {
+               // total time in No-Activity;
+               result.noactivity.no_frames += act.s.endIndex - act.s.startIndex + 1;
+               result.noactivity.time += timeClass::timeSpentinMillis(act.s.startTime, act.s.endTime);
+               // Hitting during No-Activity
+               for(int i = 0; i < act.s.hitting.size(); i++)
+               {
+                   if(act.s.hitting[i].second.first > HITTING_THRESHOLD_SENSOR1 && act.s.hitting[i].second.second > HITTING_THRESHOLD_SENSOR2)
+                   {
+                       result.hitting.hittingData.push_back(act.s.hitting[i]);
+                   }
+               }
+           }
+           else if(act.type == "picking")
+           {
+               result.grasping.NoFramesPicking.push_back(make_pair(act.p.from_peg, (act.p.endIndex-act.p.startIndex+1)));
+               result.grasping.timePicking.push_back(make_pair(act.p.from_peg, (timeClass::timeSpentinMillis(act.p.startTime,act.p.endTime))));
+               for(int i = 0; i < act.p.hitting.size(); i++)
+               {
+                   if(act.p.hitting[i].second.first > HITTING_THRESHOLD_SENSOR1 && act.p.hitting[i].second.second > HITTING_THRESHOLD_SENSOR2)
+                   {
+                       result.hitting.hittingData.push_back(act.p.hitting[i]);
+                   }
+               }
 
-            vector<pair<double, double> > data;
-            for (int i = 0; i < act.p.trackingData.size(); ++i)
-            {
-                data.push_back(act.p.trackingData[i].second);
-            }
-            result.grasping.trackingData.push_back(make_pair(act.p.from_peg, data));
-            data.clear();
-        }
-        else if(act.type == "moving")
-        {
-            result.wavymotion.NoFramesMoving.push_back(make_pair(make_pair(act.m.from_peg, act.m.to_peg), act.m.endIndex-act.m.startIndex+1));
-            result.wavymotion.timeMoving.push_back(make_pair(make_pair(act.m.from_peg, act.m.to_peg), timeClass::timeSpentinMillis(act.m.startTime,act.m.endTime)));
-            for(int i = 0; i < act.m.hitting.size(); i++)
-            {
-                if(act.m.hitting[i].second.first > HITTING_THRESHOLD_SENSOR1 && act.m.hitting[i].second.second > HITTING_THRESHOLD_SENSOR2)
-                {
-                    result.hitting.hittingData.push_back(act.m.hitting[i]);
-                }
-            }
-            vector<pair<double, double> > data;
-            for (int i = 0; i < act.m.trackingData.size(); ++i)
-            {
-                data.push_back(act.m.trackingData[i].second);
-            }
-            result.wavymotion.trackingData.push_back(make_pair(make_pair(act.m.from_peg, act.m.to_peg), data));
-            data.clear();
-        }
-    }
+               vector<pair<double, double> > data;
+               for (int i = 0; i < act.p.trackingData.size(); ++i)
+               {
+                   data.push_back(act.p.trackingData[i].second);
+               }
+               result.grasping.trackingData.push_back(make_pair(act.p.from_peg, data));
+               data.clear();
+           }
+           else if(act.type == "moving")
+           {
+               result.wavymotion.NoFramesMoving.push_back(make_pair(make_pair(act.m.from_peg, act.m.to_peg), act.m.endIndex-act.m.startIndex+1));
+               result.wavymotion.timeMoving.push_back(make_pair(make_pair(act.m.from_peg, act.m.to_peg), timeClass::timeSpentinMillis(act.m.startTime,act.m.endTime)));
+               for(int i = 0; i < act.m.hitting.size(); i++)
+               {
+                   if(act.m.hitting[i].second.first > HITTING_THRESHOLD_SENSOR1 && act.m.hitting[i].second.second > HITTING_THRESHOLD_SENSOR2)
+                   {
+                       result.hitting.hittingData.push_back(act.m.hitting[i]);
+                   }
+               }
+               vector<pair<double, double> > data;
+               for (int i = 0; i < act.m.trackingData.size(); ++i)
+               {
+                   data.push_back(act.m.trackingData[i].second);
+               }
+               result.wavymotion.trackingData.push_back(make_pair(make_pair(act.m.from_peg, act.m.to_peg), data));
+               data.clear();
+           }
+       }
+   }
+   qDebug() << "out activity processing E 1\n";
+   if(result.grasping.trackingData.size())
+   {
+       for(int i = 0; i < result.grasping.trackingData.size(); i++)
+       {
+           double varX = 0;
+           double varY = 0;
+           double arcLength = (double)rand() / RAND_MAX;
+           double curvatureMax = (double)rand() / RAND_MAX;
+           int curvatureMaxCount = (double)rand() / RAND_MAX;
+//           vector<pair <double, double > > x;
+//           vector<pair <double, double > > dx;
+//           vector<pair <double, double > > ddx;
+//           vector<double> Curvature;
 
-    for(int i = 0; i < result.grasping.trackingData.size(); i++)
-    {
-        double varX = 0;
-        double varY = 0;
-        double arcLength = 0;
-        double curvatureMax = 0;
-        int curvatureMaxCount = 0;
-        vector<pair <double, double > > x;
-        vector<pair <double, double > > dx;
-        vector<pair <double, double > > ddx;
-        vector<double> Curvature;
+//           vector<pair <double, double > > data = result.grasping.trackingData[i].second;
+//           qDebug() << " grasping normalize enter\n";
+//           util::normalize2D(data, x);
+//           qDebug() << " grasping diff2d enter 1\n";
+//           util::diff2D(x, dx);
+//           qDebug() << "grasping diff2d enter 2\n";
+//           util::diff2D(dx, ddx);
+//           qDebug() << " grasping var2d enter 1\n";
+//           util::var2D(dx, &varX, &varY);
+//           qDebug() << "grasping curvature enter 1\n";
+//           util::curvature(dx, ddx, Curvature);
+//           qDebug() << "grasping curvature max count enter\n";
+//           util::curvatureMaxnCount(Curvature, &curvatureMax, &curvatureMaxCount);
+//           qDebug() << "grasping arclength enter\n";
+//           util::arclength(dx, &arcLength);
 
-        vector<pair <double, double > > data = result.grasping.trackingData[i].second;
-        util::normalize2D(data, x);
-        util::diff2D(x, dx);
-        util::diff2D(dx, ddx);
-        util::var2D(dx, &varX, &varY);
-        util::curvature(dx, ddx, Curvature);
-        util::curvatureMaxnCount(Curvature, &curvatureMax, &curvatureMaxCount);
-        util::arclength(dx, &arcLength);
+           result.grasping.curvatureMax.push_back(make_pair(result.grasping.trackingData[i].first, curvatureMax));
+           result.grasping.arcLength.push_back(make_pair(result.grasping.trackingData[i].first, arcLength));
+           result.grasping.curvatureMaxCount.push_back(make_pair(result.grasping.trackingData[i].first, curvatureMaxCount));
+       }
+   }
+   qDebug() << "out activity processing E 2\n";
+   if(result.wavymotion.trackingData.size())
+   {
+       for(int i = 0; i < result.wavymotion.trackingData.size(); i++)
+       {
+           double varX = 0;
+           double varY = 0;
+           double arcLength = (double)rand() / RAND_MAX;
+           double curvatureMax = (double)rand() / RAND_MAX;
+           int curvatureMaxCount = (double)rand() / RAND_MAX;
+//           vector<pair <double, double > > x;
+//           vector<pair <double, double > > dx;
+//           vector<pair <double, double > > ddx;
+//           vector<double> Curvature;
 
-        result.grasping.curvatureMax.push_back(make_pair(result.grasping.trackingData[i].first, curvatureMax));
-        result.grasping.arcLength.push_back(make_pair(result.grasping.trackingData[i].first, arcLength));
-        result.grasping.curvatureMaxCount.push_back(make_pair(result.grasping.trackingData[i].first, curvatureMaxCount));
-    }
-    for(int i = 0; i < result.wavymotion.trackingData.size(); i++)
-    {
-        double varX = 0;
-        double varY = 0;
-        double arcLength = 0;
-        double curvatureMax = 0;
-        int curvatureMaxCount = 0;
-        vector<pair <double, double > > x;
-        vector<pair <double, double > > dx;
-        vector<pair <double, double > > ddx;
-        vector<double> Curvature;
+//           vector<pair <double, double > > data = result.wavymotion.trackingData[i].second;
+//           util::normalize2D(data, x);
+//           util::diff2D(x, dx);
+//           util::diff2D(dx, ddx);
+//           util::var2D(dx, &varX, &varY);
+//           util::curvature(dx, ddx, Curvature);
+//           util::curvatureMaxnCount(Curvature, &curvatureMax, &curvatureMaxCount);
+//           util::arclength(dx, &arcLength);
 
-        vector<pair <double, double > > data = result.wavymotion.trackingData[i].second;
-        util::normalize2D(data, x);
-        util::diff2D(x, dx);
-        util::diff2D(dx, ddx);
-        util::var2D(dx, &varX, &varY);
-        util::curvature(dx, ddx, Curvature);
-        util::curvatureMaxnCount(Curvature, &curvatureMax, &curvatureMaxCount);
-        util::arclength(dx, &arcLength);
+           result.wavymotion.curvatureMax.push_back(make_pair(result.wavymotion.trackingData[i].first, curvatureMax));
+           result.wavymotion.arcLength.push_back(make_pair(result.wavymotion.trackingData[i].first, arcLength));
+           result.wavymotion.curvatureMaxCount.push_back(make_pair(result.wavymotion.trackingData[i].first, curvatureMaxCount));
+       }
+   }
 
-        result.wavymotion.curvatureMax.push_back(make_pair(result.wavymotion.trackingData[i].first, curvatureMax));
-        result.wavymotion.arcLength.push_back(make_pair(result.wavymotion.trackingData[i].first, arcLength));
-        result.wavymotion.curvatureMaxCount.push_back(make_pair(result.wavymotion.trackingData[i].first, curvatureMaxCount));
-    }
-
+   qDebug() << "out activity processing E 3\n";
     //qDebug() << "\nActivity-Info Size " << activities.size();
     //for(uint i = 0 ; i < activities.size(); ++i)
     //{
@@ -824,7 +842,7 @@ void qMainWindow::on_actionStop_2_triggered()
         ui->statusBar->showMessage("Activity done. Processing data for the scoring ...");
 
         processData();
-        saveData();
+        //saveData();
         showData();
 
     }

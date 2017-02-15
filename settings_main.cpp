@@ -49,21 +49,31 @@ settings_main::settings_main(QWidget *parent) :
     filename_auxCamCalib = "aux_CamCalib.txt";
     parse_AuxCamCalib();
 
-    //path_to_db = QDir::currentPath() + "/db/endoDB.sqlite";
-
-    endoDB = QSqlDatabase::addDatabase("QMYSQL");
-    endoDB.setHostName("192.168.1.2");
-    endoDB.setDatabaseName("endodb");
-    endoDB.setUserName("root");
-    endoDB.setPassword("netsaiims");
-    endoDB.open();
-    mSettings->setDB(endoDB);
-    if(!endoDB.isOpen())
+//
+//    endoDB = QSqlDatabase::addDatabase("QMYSQL");
+//    endoDB.setHostName("192.168.1.2");
+//    endoDB.setDatabaseName("endodb");
+//    endoDB.setUserName("root");
+//    endoDB.setPassword("netsaiims");
+//    endoDB.open();
+//    mSettings->setDB(endoDB);
+//    if(!endoDB.isOpen())
+//    {
+//        QMessageBox::critical(this, tr("Error"), "<pre>Database Error. Please make sure that Rasberry-PI is turned on. <br>"
+//                                                 "If the problem persists call admin (+91-7827078568).Exiting the application </pre>");
+//        exit(0);
+//    }
+//
+    path_to_db = QDir::currentPath() + "/db/endoDB.sqlite";
+    endoDB = QSqlDatabase::addDatabase("QSQLITE");
+    endoDB.setDatabaseName(path_to_db);
+    QFileInfo checkFile(path_to_db);
+    if(!checkFile.isFile() || !endoDB.open())
     {
-        QMessageBox::critical(this, tr("Error"), "<pre>Database Error. Please make sure that Rasberry-PI is turned on. <br>"
-                                                 "If the problem persists call admin (+91-7827078568).Exiting the application </pre>");
+        QMessageBox::critical(this, tr("Error"), "Database connection failure. Exiting the application...");
         exit(0);
     }
+
 
     ui->txtDetails->setText(QDate::currentDate().toString());
 

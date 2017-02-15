@@ -268,8 +268,8 @@ bool auxCamRecord_producer::initialize(const params &par, string &errmsg,
                 camera.BalanceRatioRaw.SetValue(88);
                 camera.ColorTransformationMatrixFactor.SetValue(1);
                 camera.ColorTransformationMatrixFactorRaw.SetValue(65536);
-                camera.ExposureTimeAbs.SetValue(5000);
-                camera.ExposureTimeRaw.SetValue(5000);
+                camera.ExposureTimeAbs.SetValue(2000);
+                camera.ExposureTimeRaw.SetValue(2000);
                 camera.AcquisitionFrameRateAbs.SetValue(50);
 
                 camera.StartGrabbing(c_countOfImagesToGrab);

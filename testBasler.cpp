@@ -30,6 +30,23 @@ bool testBasler::initialize(params &param, string &errmsg)
             camera.MaxNumBuffer = 10; //(int) fs["max_num_buffer_basler"]; //25;
             camera.StartGrabbing(c_countOfImagesToGrab);
             camera.RetrieveResult( 5000, ptrGrabResult, TimeoutHandling_ThrowException);
+
+            camera.GainAuto.SetValue(GainAuto_Continuous);
+            camera.GainSelector.SetValue(GainSelector_AnalogAll);
+            camera.GainRaw.SetValue(0);
+            camera.Gamma.SetValue(1);
+            camera.DigitalShift.SetValue(0);
+            camera.ColorTransformationSelector.SetValue(ColorTransformationSelector_RGBtoRGB);
+            camera.LightSourceSelector.SetValue(LightSourceSelector_Daylight6500K);
+            camera.BalanceRatioSelector.SetValue(BalanceRatioSelector_Blue);
+            camera.BalanceRatioAbs.SetValue(1.375);
+            camera.BalanceRatioRaw.SetValue(88);
+            camera.ColorTransformationMatrixFactor.SetValue(1);
+            camera.ColorTransformationMatrixFactorRaw.SetValue(65536);
+            camera.ExposureTimeAbs.SetValue(2000);
+            camera.ExposureTimeRaw.SetValue(2000);
+            camera.AcquisitionFrameRateAbs.SetValue(50);
+
             cout << "basler width ->" << ptrGrabResult->GetWidth();
             cout << "basler height ->" << ptrGrabResult->GetHeight();
             param.cap_colsAux = ptrGrabResult->GetWidth();

@@ -104,8 +104,6 @@ LIBS += -lv4l2rds
 LIBS += -lX11
 LIBS += -lueye_api
 
-
-
 LIBS += -lopencv_calib3d
 LIBS += -lopencv_contrib
 LIBS += -lopencv_core
