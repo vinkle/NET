@@ -867,11 +867,7 @@ void qMainWindow::on_actionSwitch_Camera_triggered()
         mProducer_aux->sendFrame = true;
         mProducer_endo->sendFrame = false;
     }
-
 }
-
-
-
 void qMainWindow::LEDindexChange(int id)
 {
     qDebug() << "id" << id << endl;

@@ -263,22 +263,34 @@ void press_start()
     else if(inputString[0] == '5')
     {
       servo_pos = 84;
-      servo_pos = servo_pos + 30;
+      servo_pos = servo_pos + 20;
       myservo.write(servo_pos);
     }
     else if(inputString[0] == '6')
     {
       servo_pos = 84;
-      servo_pos = servo_pos - 30;
+      servo_pos = servo_pos - 20;
       myservo.write(servo_pos);
     }
     else if(inputString[0] == '7')
     {
       servo_pos = 84;
-      servo_pos = servo_pos + random(0, 20);
+      servo_pos = servo_pos + 30;
       myservo.write(servo_pos);
     }
     else if(inputString[0] == '8')
+    {
+      servo_pos = 84;
+      servo_pos = servo_pos - 30;
+      myservo.write(servo_pos);
+    }
+    else if(inputString[0] == '0')
+    {
+      servo_pos = 84;
+      servo_pos = servo_pos + random(0, 20);
+      myservo.write(servo_pos);
+    }
+    else if(inputString[0] == '9')
     {
       servo_pos = 84;
       servo_pos = servo_pos - random(0, 20);
