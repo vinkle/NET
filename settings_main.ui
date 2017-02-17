@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>940</width>
+    <width>958</width>
     <height>648</height>
    </rect>
   </property>
@@ -57,7 +57,7 @@
     <rect>
      <x>0</x>
      <y>80</y>
-     <width>931</width>
+     <width>951</width>
      <height>501</height>
     </rect>
    </property>
@@ -515,7 +515,7 @@
       <rect>
        <x>0</x>
        <y>40</y>
-       <width>921</width>
+       <width>941</width>
        <height>431</height>
       </rect>
      </property>
@@ -704,10 +704,10 @@ background-color: rgb(49, 207, 255);</string>
       <widget class="QGroupBox" name="groupBox_2">
        <property name="geometry">
         <rect>
-         <x>680</x>
-         <y>90</y>
-         <width>228</width>
-         <height>311</height>
+         <x>690</x>
+         <y>120</y>
+         <width>231</width>
+         <height>301</height>
         </rect>
        </property>
        <property name="font">
@@ -717,8 +717,8 @@ background-color: rgb(49, 207, 255);</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">border-color: rgb(255, 19, 101);
-</string>
+        <string notr="true">color: rgb(30, 11, 11);
+background-color: rgb(251, 250, 250);</string>
        </property>
        <property name="title">
         <string/>
@@ -729,96 +729,21 @@ background-color: rgb(49, 207, 255);</string>
        <widget class="QWidget" name="">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>211</width>
-          <height>271</height>
+          <x>11</x>
+          <y>10</y>
+          <width>212</width>
+          <height>281</height>
          </rect>
         </property>
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="QComboBox" name="comboBox">
-           <item>
-            <property name="text">
-             <string>Straight Plate</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Left Tilt +15</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Right Tilt -15</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Left Tilt +20</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Right Tilt -20</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Left Tilt +30</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Right Tilt -30</string>
-            </property>
-           </item>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <layout class="QVBoxLayout" name="verticalLayout_4">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="1" column="0">
+            <layout class="QVBoxLayout" name="verticalLayout_4">
              <item>
-              <widget class="QRadioButton" name="radioBoundingBox">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="font">
-                <font>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">color: rgb(0, 0, 0);</string>
-               </property>
-               <property name="text">
-                <string>Bounding Box</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="btnBoundingBox">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="text">
-                <string>Confirm</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout">
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <layout class="QHBoxLayout" name="horizontalLayout_2">
                <item>
-                <widget class="QRadioButton" name="radioRingSegment">
+                <widget class="QRadioButton" name="radioBoundingBox">
                  <property name="enabled">
                   <bool>false</bool>
                  </property>
@@ -832,15 +757,15 @@ background-color: rgb(49, 207, 255);</string>
                   <string notr="true">color: rgb(0, 0, 0);</string>
                  </property>
                  <property name="text">
-                  <string>Ring Segment</string>
+                  <string>Bounding Box</string>
                  </property>
                  <property name="checked">
-                  <bool>false</bool>
+                  <bool>true</bool>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="btnRingSegment">
+                <widget class="QPushButton" name="btnBoundingBox">
                  <property name="enabled">
                   <bool>false</bool>
                  </property>
@@ -852,68 +777,71 @@ background-color: rgb(49, 207, 255);</string>
               </layout>
              </item>
              <item>
-              <widget class="QSlider" name="sliderRingSegment">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="maximum">
-                <number>30</number>
-               </property>
-               <property name="value">
-                <number>0</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
-             <property name="sizeConstraint">
-              <enum>QLayout::SetDefaultConstraint</enum>
-             </property>
-             <item>
-              <widget class="QRadioButton" name="radioPegSegment">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="font">
-                <font>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">color: rgb(0, 0, 0);</string>
-               </property>
-               <property name="text">
-                <string>Peg Segment</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="btnPegSegment">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="text">
-                <string>Place Ring at 1 and click</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_2">
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <layout class="QVBoxLayout" name="verticalLayout">
                <item>
-                <widget class="QRadioButton" name="radioToolTipSegment">
+                <layout class="QHBoxLayout" name="horizontalLayout_4">
+                 <item>
+                  <widget class="QRadioButton" name="radioRingSegment">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color: rgb(0, 0, 0);</string>
+                   </property>
+                   <property name="text">
+                    <string>Ring Segment</string>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="btnRingSegment">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <property name="text">
+                    <string>Confirm</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QSlider" name="sliderRingSegment">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="maximum">
+                  <number>30</number>
+                 </property>
+                 <property name="value">
+                  <number>0</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <property name="sizeConstraint">
+                <enum>QLayout::SetDefaultConstraint</enum>
+               </property>
+               <item>
+                <widget class="QRadioButton" name="radioPegSegment">
                  <property name="enabled">
                   <bool>false</bool>
                  </property>
@@ -927,45 +855,134 @@ background-color: rgb(49, 207, 255);</string>
                   <string notr="true">color: rgb(0, 0, 0);</string>
                  </property>
                  <property name="text">
-                  <string>Tool Segment</string>
+                  <string>Peg Segment</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="btnToolSegment">
+                <widget class="QPushButton" name="btnPegSegment">
                  <property name="enabled">
                   <bool>false</bool>
                  </property>
                  <property name="text">
-                  <string>Confirm</string>
+                  <string>Place Ring at 1 and click</string>
                  </property>
                 </widget>
                </item>
               </layout>
              </item>
              <item>
-              <widget class="QSlider" name="sliderToolSegment">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="minimum">
-                <number>50</number>
-               </property>
-               <property name="maximum">
-                <number>75</number>
-               </property>
-               <property name="value">
-                <number>50</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-              </widget>
+              <layout class="QVBoxLayout" name="verticalLayout_2">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_3">
+                 <item>
+                  <widget class="QRadioButton" name="radioToolTipSegment">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color: rgb(0, 0, 0);</string>
+                   </property>
+                   <property name="text">
+                    <string>Tool Segment</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="btnToolSegment">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <property name="text">
+                    <string>Confirm</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QSlider" name="sliderToolSegment">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="minimum">
+                  <number>50</number>
+                 </property>
+                 <property name="maximum">
+                  <number>75</number>
+                 </property>
+                 <property name="value">
+                  <number>50</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
             </layout>
+           </item>
+           <item row="0" column="0">
+            <widget class="QComboBox" name="comboSelectLevel">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">color: rgb(30, 11, 11);
+background-color: rgb(251, 250, 250);</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>Straight Plate</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Left Tilt +15</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Right Tilt -15</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Left Tilt +20</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Right Tilt -20</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Left Tilt +30</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Right Tilt -30</string>
+              </property>
+             </item>
+            </widget>
            </item>
           </layout>
          </item>
@@ -1011,7 +1028,7 @@ background-color: rgb(49, 207, 255);</string>
        <property name="geometry">
         <rect>
          <x>720</x>
-         <y>90</y>
+         <y>70</y>
          <width>166</width>
          <height>17</height>
         </rect>
@@ -1050,8 +1067,38 @@ background-color: rgb(49, 207, 255);</string>
          </widget>
         </item>
        </layout>
-       <zorder>checkCalib</zorder>
-       <zorder>label_14</zorder>
+      </widget>
+      <widget class="QWidget" name="">
+       <property name="geometry">
+        <rect>
+         <x>701</x>
+         <y>90</y>
+         <width>207</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="QCheckBox" name="checkPauseVideo">
+          <property name="font">
+           <font>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Pause Video</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkOverlay">
+          <property name="text">
+           <string>Show Overlay</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <zorder>groupBox_2</zorder>
       <zorder>layoutWidget</zorder>
@@ -1064,6 +1111,9 @@ background-color: rgb(49, 207, 255);</string>
       <zorder>view_aux</zorder>
       <zorder>layoutWidget</zorder>
       <zorder>pbOnline</zorder>
+      <zorder>label_14</zorder>
+      <zorder>checkPauseVideo</zorder>
+      <zorder>checkOverlay</zorder>
      </widget>
      <widget class="QWidget" name="page_2"/>
     </widget>
@@ -1633,47 +1683,107 @@ background-color: rgb(251, 250, 250);</string>
       </property>
       <item>
        <property name="text">
-        <string>Level 1 - Straight              - 0 degree scope</string>
+        <string>Level 1   - Straight          -&gt; 0 degree scope</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>Level 2 - Left Tilt (+15)    - 0 degree scope</string>
+        <string>Level 2   - Left Tilt (+15)  -&gt; 0 degree scope</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>Level 3 - Right Tilt (-15)   - 0 degree scope</string>
+        <string>Level 3   - Right Tilt (-15) -&gt;0 degree scope</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>Level 4 - Straight              - 30 degree scope</string>
+        <string>Level 4   - Left Tilt (+20)  -&gt;0 degree scope</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>Level 5 - Left Tilt (+20)     - 30 degree scope</string>
+        <string>Level 5   - Right Tilt (-20) -&gt;0 degree scope</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>Level 6 - Right Tilt (-20)    - 30 degree scope</string>
+        <string>Level 6   - Left Tilt(+30)   -&gt;0 degree scope</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>Level 7 - Straight               - 45 degree scope</string>
+        <string>Level 7   - Right Tilt(-30)   -&gt;0 degree scope</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>Level 8 - Left Tilt(+30)       - 45 degree scope</string>
+        <string>Level 8   - Straight            -&gt;30 degree scope</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>Level 9 - Right Tilt(-30)       - 45 degree scope</string>
+        <string>Level 9   - Left Tilt (+15)   -&gt;30 degree scope</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Level 10 - Right Tilt (-15)   -&gt;30 degree scope</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Level 11 - Left Tilt (+20)    -&gt;30 degree scope</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Level 12 - Right Tilt (-20)    -&gt;30 degree scope</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Level 13 - Left Tilt(+30)       -&gt;30 degree scope</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Level 14 - Right Tilt(-30)      -&gt;30 degree scope</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Level 15 - Straight               -&gt;45 degree scope</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Level 16 - Left Tilt (+15)     -&gt;45 degree scope</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Level 17 - Right Tilt (-15)    -&gt;45 degree scope</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Level 18 - Left Tilt (+20)    -&gt;45 degree scope</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Level 19 - Right Tilt (-20)    -&gt;45 degree scope</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Level 20 -  Left Tilt(+30)     -&gt;45 degree scope</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Level 21 - Right Tilt(-30)     -&gt;45 degree scope</string>
        </property>
       </item>
      </widget>

@@ -2,13 +2,16 @@
 #define UTIL_Included
 #include <opencv2/core/core.hpp>
 #include <string>
+#include <iostream>
+#include <QtCore>
+#include <QDebug>
+
 using namespace cv;
 using namespace std;
 
-class util
+class util:public QObject
 {
-private:
-
+    Q_OBJECT
 public:
     util();
     ~util();

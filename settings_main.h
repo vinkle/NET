@@ -111,13 +111,21 @@ private slots:
 
     void handleError(QSerialPort::SerialPortError error);
 
+    void on_comboSelectLevel_activated(int index);
+
+    void on_selectLevel_activated(int index);
+
+    void on_checkPauseVideo_clicked(bool checked);
+
+    void on_checkOverlay_clicked(bool checked);
+
 protected:
     virtual void  keyPressEvent(QKeyEvent *event);
 
 
 private:
     void cleanup();
-    void parse_AuxCamCalib();
+    void parse_AuxCamCalib(const QString &f);
     bool checkSettings();
     void openSerialPort();
     void closeSerialPort();
@@ -181,6 +189,7 @@ private:
     QRect temp_rect, temp_rectBig;
     QString filename_auxCamCalib;
     cv::Mat element[4];
+    bool showOverlay;
 
 };
 #endif

@@ -46,10 +46,6 @@ settings_main::settings_main(QWidget *parent) :
     element[2] = getStructuringElement(MORPH_ELLIPSE, Size(3, 3), Point(0, 0));
     element[3] = getStructuringElement(MORPH_ELLIPSE, Size(3, 3), Point(0, 0));
 
-    filename_auxCamCalib = "aux_CamCalib.txt";
-    parse_AuxCamCalib();
-
-//
 //    endoDB = QSqlDatabase::addDatabase("QMYSQL");
 //    endoDB.setHostName("192.168.1.2");
 //    endoDB.setDatabaseName("endodb");
@@ -63,7 +59,7 @@ settings_main::settings_main(QWidget *parent) :
 //                                                 "If the problem persists call admin (+91-7827078568).Exiting the application </pre>");
 //        exit(0);
 //    }
-//
+
     path_to_db = QDir::currentPath() + "/db/endoDB.sqlite";
     endoDB = QSqlDatabase::addDatabase("QSQLITE");
     endoDB.setDatabaseName(path_to_db);
@@ -81,11 +77,18 @@ settings_main::settings_main(QWidget *parent) :
     serial = new QSerialPort(this);
     connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this, SLOT(handleError(QSerialPort::SerialPortError)));
     openSerialPort();
-    usleep(100000);
+    usleep(1000000);
     ui->groupBox_2->hide();
     updateNames();
 
     //qDebug() << "time in ms " << timeClass::timeSpentinMillis("13:16:25:500", "13:14:10:999") << endl;
+
+    filename_auxCamCalib = "/calib_files/aux_CamCalib_Straight.txt";
+    parse_AuxCamCalib(filename_auxCamCalib);
+    //writeData("z\n");
+    //writeData("s\n");
+    //writeData("y\n");
+    showOverlay = false;
 }
 
 void settings_main::updateNames()
@@ -133,16 +136,23 @@ void settings_main::openSerialPort()
 
 void settings_main::closeSerialPort()
 {
-    if (serial->isOpen())
+    if(serial->isOpen())
+    {
+        qDebug() << "Closing serial port \n";
+        writeData("z\n");
+        usleep(1000);
         serial->close();
+    }
 }
 
 void settings_main::writeData(const QString str)
 {
     qDebug() << "writing data " << str;
     QByteArray commandSerial = str.toLocal8Bit();
+    //qDebug() << "before write ";
     serial->write(commandSerial);
-    usleep(100000);
+    //qDebug() << "after write ";
+    usleep(10000);
 }
 void settings_main::handleError(QSerialPort::SerialPortError error)
 {
@@ -153,9 +163,11 @@ void settings_main::handleError(QSerialPort::SerialPortError error)
     }
 }
 
-void settings_main::parse_AuxCamCalib()
+void settings_main::parse_AuxCamCalib(const QString &filename)
 {
-    QFile file(filename_auxCamCalib);
+    QString fileCalib = QDir::currentPath()+ filename;
+//    qDebug() << "fileCalib" << fileCalib;
+    QFile file(fileCalib);
     if(ui->tabWidget->currentIndex() == 0)
     {
 //        qDebug() << "Before Calibration\n";
@@ -171,6 +183,15 @@ void settings_main::parse_AuxCamCalib()
             QMessageBox::information(0, "error", "Aux-Cam Calibration File not found; Do the auxiliary camera calibration to proceed");
             ui->pbOnline->setEnabled(false);
             ui->checkCalib->setChecked(true);
+            ui->groupBox_2->show();
+            usleep(100000);
+            ui->comboSelectLevel->setEnabled(true);
+            ui->comboSelectLevel->setCurrentIndex(0);
+            writeData("z\n");
+            writeData("s\n");
+            //writeData("s\n");
+            ui->label_status->clear();
+            ui->label_status->setText("Select the plate angle");
         }
         else
         {
@@ -259,8 +280,10 @@ void settings_main::parse_AuxCamCalib()
             withoutRing_bigRectThresh = max2;
             withRing_smallRectThresh = min1;
             withRing_bigRectThresh = min2;
-
-
+            //writeData("z\n");
+            //usleep(100000);
+            //writeData("s\n");
+            //usleep(100000);
 //            qDebug() << "After Calibration\n";
 //            qDebug() << "Bounding Box\n" << boundingRectangle << endl;
 //            qDebug() << "pegs_small\n" << pegs_small << endl;
@@ -486,12 +509,16 @@ void settings_main::updatelblAux(const myMat &lblImg)
     AuxImg =  QImage((uchar*)img3u_disp.data, SmallRect_Width, SmallRect_Height, img3u_disp.step, QImage::Format_RGB888);
     scene_aux->clear();
     scene_aux->addPixmap(QPixmap::fromImage(AuxImg));
-    for(int i = 0; i < pegs_small.size(); i++)
+    if(showOverlay)
     {
-        QRect r(pegs_small[i].x()/4, pegs_small[i].y()/4, pegs_small[i].width()/4, pegs_small[i].height()/4);
-        scene_aux->addRect(r, QPen(QColor(255, 255,0)));
-        r.setRect(pegs_big[i].x()/4, pegs_big[i].y()/4, pegs_big[i].width()/4, pegs_big[i].height()/4);
-        scene_aux->addRect(r, QPen(QColor(255, 0,255)));
+        for(int i = 0; i < pegs_small.size(); i++)
+        {
+
+            QRect r(pegs_small[i].x()/4, pegs_small[i].y()/4, pegs_small[i].width()/4, pegs_small[i].height()/4);
+            scene_aux->addRect(r, QPen(QColor(255, 255,0)));
+            //r.setRect(pegs_big[i].x()/4, pegs_big[i].y()/4, pegs_big[i].width()/4, pegs_big[i].height()/4);
+            //scene_aux->addRect(r, QPen(QColor(255, 0,255)));
+        }
     }
     if(thread_aux->isRunning())
     {
@@ -537,7 +564,6 @@ void settings_main::updatelblEndo(const myMat &lblImg)
             ui->view_endo_3->setScene(scene_endo);
             ui->view_endo_3->show();
         }
-
     }
 }
 
@@ -753,6 +779,7 @@ void settings_main::on_pbOnline_clicked()
                                   QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes)
     {
+        closeSerialPort();
         cleanup();
         string DrName = ui->boxName->currentText().toStdString();
         int level = ui->selectLevel->currentIndex();
@@ -788,6 +815,8 @@ void settings_main::on_pbOffline_clicked()
                                   QMessageBox::Yes|QMessageBox::No);
     if (reply == QMessageBox::Yes)
     {
+        writeData("z\n");
+        usleep(1000);
         cleanup();
         string DrName = ui->boxName->currentText().toUtf8().constData();
         int level = ui->selectLevel->currentIndex();
@@ -814,6 +843,8 @@ void settings_main::on_pbOffline_clicked()
 void settings_main::cleanup()
 {
     cout << "cleanup triggered \n";
+    writeData("z\n");
+    usleep(1000);
     closeSerialPort();
     if(camAuxFound)
     {
@@ -891,11 +922,6 @@ settings_main::~settings_main()
     delete ui;
 }
 
-//void settings_main::closeEvent(QCloseEvent *event)
-//{
-//    event->ignore();
-//}
-
 void settings_main::on_pbRefresh_clicked()
 {
     initialSetup();
@@ -914,16 +940,19 @@ void settings_main::on_checkCalib_clicked(bool checked)
 {
     if(checked)
     {
-        mTest_Basler->m_pause = true;
+        //mTest_Basler->m_pause = true;
         ui->groupBox_2->show();
         usleep(100000);
-        ui->radioBoundingBox->setEnabled(true);
+        ui->comboSelectLevel->setEnabled(true);
+        ui->comboSelectLevel->setCurrentIndex(0);
+        writeData("s\n");
+        writeData("y\n");
         ui->label_status->clear();
-        ui->label_status->setText("Draw the bounding box around the pegs and confirm");
+        ui->label_status->setText("Select the plate angle");
     }
     else
     {
-        mTest_Basler->m_pause = false;
+        //mTest_Basler->m_pause = false;
         ui->radioBoundingBox->setEnabled(false);
         ui->groupBox_2->hide();
     }
@@ -932,9 +961,9 @@ void settings_main::on_checkCalib_clicked(bool checked)
 
 void settings_main::on_radioPegSegment_clicked(bool checked)
 {
-    mTest_Basler->m_pause = false;
-    usleep(100000);
-    mTest_Basler->m_pause = true;
+    //mTest_Basler->m_pause = false;
+    //usleep(100000);
+    //mTest_Basler->m_pause = true;
     if(checked)
     {
         segment_peg = true;
@@ -959,7 +988,7 @@ void settings_main::on_radioRingSegment_clicked(bool checked)
 
 void settings_main::on_radioToolTipSegment_clicked(bool checked)
 {
-    mTest_Basler->m_pause = false;
+    //mTest_Basler->m_pause = false;
     usleep(1000);
     ui->label_status->clear();
     ui->label_status->setText("Bring the tool and change the slider");
@@ -1260,9 +1289,9 @@ void settings_main::on_btnPegSegment_clicked()
     }
     else if(ui->btnPegSegment->text() == "Remove all the rings and click")
     {
-        mTest_Basler->m_pause = false;
-        usleep(100000);
-        mTest_Basler->m_pause = true;
+        //mTest_Basler->m_pause = false;
+        //usleep(100000);
+        //mTest_Basler->m_pause = true;
         ui->btnPegSegment->setText("Done");
         for(int i = 0; i < pegs_big.size(); i++)
         {
@@ -1346,7 +1375,7 @@ void settings_main::on_sliderToolSegment_valueChanged(int value)
 {
     if(segment_tool)
     {
-        mTest_Basler->m_pause = true;
+        //mTest_Basler->m_pause = true;
         usleep(1000);
         Mat diff_hsv, mask_out;
         cv::medianBlur(AuxImg_full, AuxImg_full, 3);
@@ -1385,7 +1414,7 @@ void settings_main::on_btnToolSegment_clicked()
     ui->radioToolTipSegment->setEnabled(false);
     ui->btnToolSegment->setEnabled(false);
     ui->sliderToolSegment->setEnabled(false);
-    QFile file(filename_auxCamCalib);
+    QFile file(QDir::currentPath() + filename_auxCamCalib);
     file.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&file);
 
@@ -1438,4 +1467,157 @@ void settings_main::on_boxType_currentIndexChanged(const QString &arg1)
     {
         ui->txtDetails->setText(QDate::currentDate().toString());
     }
+}
+
+void settings_main::on_comboSelectLevel_activated(int index)
+{
+    if(index == 0)
+    {
+        filename_auxCamCalib = "/calib_files/aux_CamCalib_Straight.txt";
+        writeData("y\n");
+        ui->radioBoundingBox->setEnabled(true);
+        ui->comboSelectLevel->setEnabled(false);
+        ui->label_status->clear();
+        ui->label_status->setText("Draw the bounding box around the pegs and confirm");
+        //usleep(3000000);
+        //mTest_Basler->m_pause = true;
+    }
+    else if(index == 1)
+    {
+        filename_auxCamCalib = "/calib_files/aux_CamCalib_LeftTilt+15.txt";
+        writeData("3\n");
+        ui->radioBoundingBox->setEnabled(true);
+        ui->comboSelectLevel->setEnabled(false);
+        ui->label_status->clear();
+        ui->label_status->setText("Draw the bounding box around the pegs and confirm");
+        //usleep(3000000);
+        //mTest_Basler->m_pause = true;
+    }
+    else if(index == 2)
+    {
+        filename_auxCamCalib = "/calib_files/aux_CamCalib_RightTilt-15.txt";
+        writeData("4\n");
+        ui->radioBoundingBox->setEnabled(true);
+        ui->comboSelectLevel->setEnabled(false);
+        ui->label_status->clear();
+        ui->label_status->setText("Draw the bounding box around the pegs and confirm");
+        //usleep(3000000);
+        //mTest_Basler->m_pause = true;
+    }
+    else if(index == 3)
+    {
+        filename_auxCamCalib = "/calib_files/aux_CamCalib_LeftTilt+20.txt";
+        writeData("5\n");
+        ui->radioBoundingBox->setEnabled(true);
+        ui->comboSelectLevel->setEnabled(false);
+        ui->label_status->clear();
+        ui->label_status->setText("Draw the bounding box around the pegs and confirm");
+        //usleep(3000000);
+        //mTest_Basler->m_pause = true;
+    }
+    else if(index == 4)
+    {
+        filename_auxCamCalib = "/calib_files/aux_CamCalib_RightTilt-20.txt";
+        writeData("6\n");
+        ui->radioBoundingBox->setEnabled(true);
+        ui->comboSelectLevel->setEnabled(false);
+        ui->label_status->clear();
+        ui->label_status->setText("Draw the bounding box around the pegs and confirm");
+        //usleep(3000000);
+        //mTest_Basler->m_pause = true;
+    }
+    else if(index == 5)
+    {
+        filename_auxCamCalib = "/calib_files/aux_CamCalib_LeftTilt+30.txt";
+        writeData("7\n");
+        ui->radioBoundingBox->setEnabled(true);
+        ui->comboSelectLevel->setEnabled(false);
+        ui->label_status->clear();
+        ui->label_status->setText("Draw the bounding box around the pegs and confirm");
+        //usleep(3000000);
+        //mTest_Basler->m_pause = true;
+    }
+    else if(index == 6)
+    {
+        filename_auxCamCalib = "/calib_files/aux_CamCalib_RightTilt-30.txt";
+        writeData("8\n");
+        ui->radioBoundingBox->setEnabled(true);
+        ui->comboSelectLevel->setEnabled(false);
+        ui->label_status->clear();
+        ui->label_status->setText("Draw the bounding box around the pegs and confirm");
+        //usleep(3000000);
+        //mTest_Basler->m_pause = true;
+    }
+}
+
+void settings_main::on_selectLevel_activated(int index)
+{
+    if(index == 0 || index == 7 || index == 14)
+    {
+        filename_auxCamCalib = "/calib_files/aux_CamCalib_Straight.txt";
+        parse_AuxCamCalib(filename_auxCamCalib);
+        writeData("s\n");
+        writeData("y\n");
+    }
+    else if(index == 1 || index == 8 || index == 15)
+    {
+        filename_auxCamCalib = "/calib_files/aux_CamCalib_LeftTilt+15.txt";
+        parse_AuxCamCalib(filename_auxCamCalib);
+        writeData("s\n");
+        writeData("3\n");
+    }
+    else if(index == 2 || index == 9 || index == 16)
+    {
+        filename_auxCamCalib = "/calib_files/aux_CamCalib_RightTilt-15.txt";
+        parse_AuxCamCalib(filename_auxCamCalib);
+        writeData("s\n");
+        writeData("4\n");
+    }
+    else if(index == 3 || index == 10 || index == 17)
+    {
+        filename_auxCamCalib = "/calib_files/aux_CamCalib_LeftTilt+20.txt";
+        parse_AuxCamCalib(filename_auxCamCalib);
+        writeData("s\n");
+        writeData("5\n");
+    }
+    else if(index == 4 || index == 11 || index == 18)
+    {
+        filename_auxCamCalib = "/calib_files/aux_CamCalib_RightTilt-20.txt";
+        parse_AuxCamCalib(filename_auxCamCalib);
+        writeData("s\n");
+        writeData("6\n");
+    }
+    else if(index == 5 || index == 12 || index == 19)
+    {
+        filename_auxCamCalib = "/calib_files/aux_CamCalib_LeftTilt+30.txt";
+        parse_AuxCamCalib(filename_auxCamCalib);
+        writeData("s\n");
+        writeData("7\n");
+    }
+    else if(index == 6 || index == 13 || index == 20)
+    {
+        filename_auxCamCalib = "/calib_files/aux_CamCalib_RightTilt-30.txt";
+        parse_AuxCamCalib(filename_auxCamCalib);
+        writeData("s\n");
+        writeData("8\n");
+    }
+}
+
+void settings_main::on_checkPauseVideo_clicked(bool checked)
+{
+    if(checked)
+    {
+        mTest_Basler->m_pause = true;
+        usleep(1000);
+    }
+    else
+    {
+        mTest_Basler->m_pause = false;
+        usleep(1000);
+    }
+}
+
+void settings_main::on_checkOverlay_clicked(bool checked)
+{
+    showOverlay = checked;
 }

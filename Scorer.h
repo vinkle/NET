@@ -7,8 +7,7 @@
 #include <fstream>
 #include <iterator>
 using namespace std;
-#define HITTING_THRESHOLD_SENSOR1 400
-#define HITTING_THRESHOLD_SENSOR2 400
+#define HITTING_THRESHOLD_SENSOR 400
 
 //12-12-12
 struct Activity
@@ -18,7 +17,7 @@ struct Activity
 	{
         int startIndex, endIndex;
         string startTime, endTime;  // Time of starting and ending of the activity
-        vector<pair<string, pair<int, int> > > hitting; // Hitting values in these times
+        vector<pair<string, int > > hitting; // Hitting values in these times
         vector<pair<string, pair<double, double> > > trackingData; // Tracking Data in the stationary activity
         //vector<int> framesForTrackingFailure;
         //vector<int> framesForTrackingReinit;
@@ -48,7 +47,7 @@ struct Activity
         int startIndex, endIndex;
         string startTime, endTime;
 		int from_peg;
-        vector<pair<string, pair<int, int> > > hitting;
+        vector<pair<string, int > > hitting;
         vector<pair<string, pair<double, double> > > trackingData;
         //vector<int> framesForTrackingFailure;
         //vector<int> framesForRingHitting;
@@ -80,7 +79,7 @@ struct Activity
         int startIndex, endIndex;
         string startTime, endTime;
         int from_peg, to_peg;
-        vector<pair<string, pair<int, int> > > hitting;
+        vector<pair<string, int > > hitting;
         vector<pair<string, pair<double, double> > > trackingData;
         //vector<int> framesForTrackingFailure;
         //vector<int> framesForRingHitting;
@@ -133,7 +132,7 @@ struct Activity
             cout << "Hitting Data\n";
             for(unsigned int i = 0; i <  s.hitting.size(); i++)
             {
-                cout << "time->" << s.hitting[i].first << "  vals->(" << s.hitting[i].second.first << "," << s.hitting[i].second.second << ")\n";
+                cout << "time->" << s.hitting[i].first << "  vals->(" << s.hitting[i].second << ")\n";
             }
             cout << "Tracking Data\n";
             for(unsigned int i = 0; i <  s.trackingData.size(); i++)
@@ -148,7 +147,7 @@ struct Activity
             cout << "Hitting Data\n";
             for(unsigned int i = 0; i <  p.hitting.size(); i++)
             {
-                cout << "time->" << p.hitting[i].first << "  vals->(" << p.hitting[i].second.first << "," << p.hitting[i].second.second << ")\n";
+                cout << "time->" << p.hitting[i].first << "  vals->(" << p.hitting[i].second << ")\n";
             }
             cout << "Tracking Data\n";
             for(unsigned int i = 0; i <  p.trackingData.size(); i++)
@@ -164,7 +163,7 @@ struct Activity
             cout << "Hitting Data\n";
             for(unsigned int i = 0; i <  m.hitting.size(); i++)
             {
-                cout << "time->" << m.hitting[i].first << "  vals->(" << m.hitting[i].second.first << "," << m.hitting[i].second.second << ")\n";
+                cout << "time->" << m.hitting[i].first << "  vals->(" << m.hitting[i].second << ")\n";
             }
             cout << "Tracking Data\n";
             for(unsigned int i = 0; i <  m.trackingData.size(); i++)
@@ -185,8 +184,8 @@ struct Activity
             Activity_Data << "Hitting-Data\n";
             for(unsigned int i = 0; i <  s.hitting.size(); i++)
             {
-                returnStr.append("time," + s.hitting[i].first + ",vals," + std::to_string(s.hitting[i].second.first) + "," + std::to_string(s.hitting[i].second.second) + "\n");
-                Activity_Data << "time," << s.hitting[i].first << ",vals," << s.hitting[i].second.first << "," << s.hitting[i].second.second << "\n";
+                returnStr.append("time," + s.hitting[i].first + ",vals," + std::to_string(s.hitting[i].second)+ "\n");
+                Activity_Data << "time," << s.hitting[i].first << ",vals," << s.hitting[i].second << "\n";
             }
             returnStr.append("Tracking-Data\n");
             Activity_Data << "Tracking-Data\n";
@@ -208,8 +207,8 @@ struct Activity
             Activity_Data << "Hitting-Data\n";
             for(unsigned int i = 0; i <  p.hitting.size(); i++)
             {
-                returnStr.append("time," + p.hitting[i].first + ",vals," + std::to_string(p.hitting[i].second.first) + "," + std::to_string(p.hitting[i].second.second) + "\n");
-                Activity_Data << "time," << p.hitting[i].first << ",vals," << p.hitting[i].second.first << "," << p.hitting[i].second.second << "\n";
+                returnStr.append("time," + p.hitting[i].first + ",vals," + std::to_string(p.hitting[i].second)+ "\n");
+                Activity_Data << "time," << p.hitting[i].first << ",vals," << p.hitting[i].second << "\n";
             }
 
             returnStr.append("Tracking-Data\n");
@@ -233,8 +232,8 @@ struct Activity
             Activity_Data << "Hitting-Data\n";
             for(unsigned int i = 0; i <  m.hitting.size(); i++)
             {
-                returnStr.append("time," + m.hitting[i].first + ",vals," + std::to_string(m.hitting[i].second.first) + "," + std::to_string(m.hitting[i].second.second) + "\n");
-                Activity_Data << "time," << m.hitting[i].first << ",vals," << m.hitting[i].second.first << "," << m.hitting[i].second.second << "\n";
+                returnStr.append("time," + m.hitting[i].first + ",vals," + std::to_string(m.hitting[i].second) + "\n");
+                Activity_Data << "time," << m.hitting[i].first << ",vals," << m.hitting[i].second << "\n";
             }
             returnStr.append("Tracking-Data\n");
             Activity_Data << "Tracking Data\n";
@@ -256,7 +255,7 @@ struct Activity
             returnStr.append("Hitting-Data\n");
             for(unsigned int i = 0; i <  s.hitting.size(); i++)
             {
-                returnStr.append("time," + s.hitting[i].first + ",vals," + std::to_string(s.hitting[i].second.first) + "," + std::to_string(s.hitting[i].second.second) + "\n");
+                returnStr.append("time," + s.hitting[i].first + ",vals," + std::to_string(s.hitting[i].second) + "\n");
             }
             returnStr.append("Tracking-Data\n");
             for(unsigned int i = 0; i <  s.trackingData.size(); i++)
@@ -271,7 +270,7 @@ struct Activity
             returnStr.append("Hitting-Data\n");
             for(unsigned int i = 0; i <  p.hitting.size(); i++)
             {
-                returnStr.append("time," + p.hitting[i].first + ",vals," + std::to_string(p.hitting[i].second.first) + "," + std::to_string(p.hitting[i].second.second) + "\n");
+                returnStr.append("time," + p.hitting[i].first + ",vals," + std::to_string(p.hitting[i].second) + "\n");
             }
             returnStr.append("Tracking-Data\n");
             for(unsigned int i = 0; i <  p.trackingData.size(); i++)
@@ -287,7 +286,7 @@ struct Activity
             returnStr.append("Hitting-Data\n");
             for(unsigned int i = 0; i <  m.hitting.size(); i++)
             {
-                returnStr.append("time," + m.hitting[i].first + ",vals," + std::to_string(m.hitting[i].second.first) + "," + std::to_string(m.hitting[i].second.second) + "\n");
+                returnStr.append("time," + m.hitting[i].first + ",vals," + std::to_string(m.hitting[i].second)+ "\n");
             }
             returnStr.append("Tracking-Data\n");
             for(unsigned int i = 0; i <  m.trackingData.size(); i++)
@@ -303,7 +302,7 @@ struct Result
 {
 	struct Hitting
 	{
-        vector<pair<string, pair<int, int> > > hittingData; // Hitting values in these times
+        vector<pair<string, int > > hittingData; // Hitting values in these times
 		double hittingScore;
 		Hitting()
 		{
@@ -493,11 +492,11 @@ struct Result
     void print()
     {
         cout << "Hitting\n";
-        cout << "Time-stamp, Sensor-1, Sensor-2\n";
+        cout << "Time-stamp, Sensor Data\n";
 
         for(int i = 0; i < hitting.hittingData.size(); i++)
         {
-            cout << hitting.hittingData[i].first << "," << hitting.hittingData[i].second.first << "," << hitting.hittingData[i].second.second << endl;
+            cout << hitting.hittingData[i].first << "," << hitting.hittingData[i].second << endl;
         }
         //resultFile << "Result," << hitting.hittingScore;
 
@@ -532,14 +531,13 @@ struct Result
     {
         string returnStr;
         resultFile << "Hitting\n";
-        resultFile << "Time-stamp, Sensor-1, Sensor-2\n";
+        resultFile << "Time-stamp, Sensor Data\n";
         returnStr.append("Hitting\n");
-        returnStr.append("Time-stamp, Sensor-1, Sensor-2\n");
+        returnStr.append("Time-stamp, Sensor-Data\n");
         for(int i = 0; i < hitting.hittingData.size(); i++)
         {
-            resultFile << hitting.hittingData[i].first << "," << hitting.hittingData[i].second.first << "," << hitting.hittingData[i].second.second << endl;
-            returnStr.append(hitting.hittingData[i].first + "," + std::to_string(hitting.hittingData[i].second.first)
-                             + "," + std::to_string(hitting.hittingData[i].second.second) + "\n");
+            resultFile << hitting.hittingData[i].first << "," << hitting.hittingData[i].second << endl;
+            returnStr.append(hitting.hittingData[i].first + "," + std::to_string(hitting.hittingData[i].second) + "\n");
         }
         //resultFile << "Result," << hitting.hittingScore;
 
@@ -588,11 +586,10 @@ struct Result
     {
         string returnStr;
         returnStr.append("Hitting\n");
-        returnStr.append("Time-stamp, Sensor-1, Sensor-2\n");
+        returnStr.append("Time-stamp, Sensor-Data\n");
         for(int i = 0; i < hitting.hittingData.size(); i++)
         {
-            returnStr.append(hitting.hittingData[i].first + "," + std::to_string(hitting.hittingData[i].second.first)
-                             + "," + std::to_string(hitting.hittingData[i].second.second));
+            returnStr.append(hitting.hittingData[i].first + "," + std::to_string(hitting.hittingData[i].second));
         }
         //resultFile << "Result," << hitting.hittingScore;
 

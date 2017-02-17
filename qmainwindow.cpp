@@ -40,7 +40,7 @@ qMainWindow::qMainWindow(/*settings_main &obj, */const params &par, string type,
     thresh_ring(thresh_ring),
     thresh_tool(thresh_tool)
     {
-        TotalTimeinMs = 15*60*1000;
+        TotalTimeinMs = 3*60*1000;
         sendtoDB = false;
         camState = true;
         // serial port settings and stuff
@@ -197,6 +197,7 @@ qMainWindow::qMainWindow(/*settings_main &obj, */const params &par, string type,
         }
         m_showResult = new showResult;
         modelResult = new QStandardItemModel;
+        tempVar = false;
 }
 
 void qMainWindow::updateStatus(const QString & trackingMsg)
@@ -227,8 +228,6 @@ void qMainWindow::updateStatus(const QString & trackingMsg)
 
 void qMainWindow::on_actionStart_Activity_triggered()
 {
-    writeData("z\n");
-    writeData("s\n");
     if(type == "practice")
     {
          ui->statusBar->showMessage("Practice session has started. Follow the Red LED to put the ring. Press exit to return to main menu");
@@ -270,6 +269,8 @@ void qMainWindow::on_actionStart_Activity_triggered()
          ui->actionStop_2->setEnabled(true);
          ui->actionStart_Activity->setEnabled(false);
          ui->actionQuit->setEnabled(false);
+         writeData("s\n");
+         usleep(10000);
     }
 }
 
@@ -495,10 +496,10 @@ void qMainWindow::processData()
                     string date = Hitting[i].first;
                     string str1= Hitting[i].second;
                     string str = str1.substr(3, str1.size()-3);
-                    std::string::size_type index = str.find(',', 0);
-                    int n1 = std::atoi(str.substr(0, index).c_str());
-                    int n2 = std::atoi(str.substr(index+1).c_str());
-                    activities[p].s.hitting.push_back(make_pair(date, make_pair(n1, n2)));
+                    //std::string::size_type index = str.find(',', 0);
+                    //int n1 = std::atoi(str.substr(0, index).c_str());
+                    int n = std::atoi(str.c_str());
+                    activities[p].s.hitting.push_back(make_pair(date, n));
                 }
             }
             if(resTracking)
@@ -529,10 +530,10 @@ void qMainWindow::processData()
                     string date = Hitting[i].first;
                     string str1 = Hitting[i].second;
                     string str = str1.substr(3, str1.size()-3);
-                    std::string::size_type index = str.find(',', 0);
-                    int n1 = std::atoi(str.substr(0, index).c_str());
-                    int n2 = std::atoi(str.substr(index+1).c_str());
-                    activities[p].p.hitting.push_back(make_pair(date, make_pair(n1, n2)));
+                    //std::string::size_type index = str.find(',', 0);
+                    //int n1 = std::atoi(str.substr(0, index).c_str());
+                    int n = std::atoi(str.c_str());
+                    activities[p].p.hitting.push_back(make_pair(date, n));
                 }
             }
             if(resTracking)
@@ -563,10 +564,10 @@ void qMainWindow::processData()
                     string date = Hitting[i].first;
                     string str1 = Hitting[i].second;
                     string str = str1.substr(3, str1.size()-3);
-                    std::string::size_type index = str.find(',', 0);
-                    int n1 = std::atoi(str.substr(0, index).c_str());
-                    int n2 = std::atoi(str.substr(index+1).c_str());
-                    activities[p].m.hitting.push_back(make_pair(date, make_pair(n1, n2)));
+                    //std::string::size_type index = str.find(',', 0);
+                    //int n1 = std::atoi(str.substr(0, index).c_str());
+                    int n = std::atoi(str.c_str());
+                    activities[p].m.hitting.push_back(make_pair(date, n));
                 }
             }
             if(resTracking)
@@ -596,7 +597,7 @@ void qMainWindow::processData()
                // Hitting during No-Activity
                for(int i = 0; i < act.s.hitting.size(); i++)
                {
-                   if(act.s.hitting[i].second.first > HITTING_THRESHOLD_SENSOR1 && act.s.hitting[i].second.second > HITTING_THRESHOLD_SENSOR2)
+                   if(act.s.hitting[i].second > HITTING_THRESHOLD_SENSOR )
                    {
                        result.hitting.hittingData.push_back(act.s.hitting[i]);
                    }
@@ -608,7 +609,7 @@ void qMainWindow::processData()
                result.grasping.timePicking.push_back(make_pair(act.p.from_peg, (timeClass::timeSpentinMillis(act.p.startTime,act.p.endTime))));
                for(int i = 0; i < act.p.hitting.size(); i++)
                {
-                   if(act.p.hitting[i].second.first > HITTING_THRESHOLD_SENSOR1 && act.p.hitting[i].second.second > HITTING_THRESHOLD_SENSOR2)
+                   if(act.p.hitting[i].second > HITTING_THRESHOLD_SENSOR)
                    {
                        result.hitting.hittingData.push_back(act.p.hitting[i]);
                    }
@@ -628,7 +629,7 @@ void qMainWindow::processData()
                result.wavymotion.timeMoving.push_back(make_pair(make_pair(act.m.from_peg, act.m.to_peg), timeClass::timeSpentinMillis(act.m.startTime,act.m.endTime)));
                for(int i = 0; i < act.m.hitting.size(); i++)
                {
-                   if(act.m.hitting[i].second.first > HITTING_THRESHOLD_SENSOR1 && act.m.hitting[i].second.second > HITTING_THRESHOLD_SENSOR2)
+                   if(act.m.hitting[i].second > HITTING_THRESHOLD_SENSOR)
                    {
                        result.hitting.hittingData.push_back(act.m.hitting[i]);
                    }
@@ -650,29 +651,35 @@ void qMainWindow::processData()
        {
            double varX = 0;
            double varY = 0;
-           double arcLength = (double)rand() / RAND_MAX;
-           double curvatureMax = (double)rand() / RAND_MAX;
-           int curvatureMaxCount = (double)rand() / RAND_MAX;
-//           vector<pair <double, double > > x;
-//           vector<pair <double, double > > dx;
-//           vector<pair <double, double > > ddx;
-//           vector<double> Curvature;
+           double arcLength = 0;
+           double curvatureMax = 0;
+           int curvatureMaxCount = 0;
+           vector<pair <double, double > > x;
+           vector<pair <double, double > > dx;
+           vector<pair <double, double > > ddx;
+           vector<double> Curvature;
 
-//           vector<pair <double, double > > data = result.grasping.trackingData[i].second;
-//           qDebug() << " grasping normalize enter\n";
-//           util::normalize2D(data, x);
-//           qDebug() << " grasping diff2d enter 1\n";
-//           util::diff2D(x, dx);
-//           qDebug() << "grasping diff2d enter 2\n";
-//           util::diff2D(dx, ddx);
-//           qDebug() << " grasping var2d enter 1\n";
-//           util::var2D(dx, &varX, &varY);
-//           qDebug() << "grasping curvature enter 1\n";
-//           util::curvature(dx, ddx, Curvature);
-//           qDebug() << "grasping curvature max count enter\n";
-//           util::curvatureMaxnCount(Curvature, &curvatureMax, &curvatureMaxCount);
-//           qDebug() << "grasping arclength enter\n";
-//           util::arclength(dx, &arcLength);
+           vector<pair <double, double > > data = result.grasping.trackingData[i].second;
+           //qDebug() << " grasping normalize enter\n";
+           util::normalize2D(data, x);
+           //qDebug() << " data size \n" << data.size();
+           //qDebug() << " x normalized data \n" << x.size();
+           //for(int i = 0; i < x.size(); i++)
+           //{
+           //    qDebug() << "x[i] - " << x[i] << endl;
+           //}
+           //qDebug() << " grasping diff2d enter 1\n";
+           util::diff2D(x, dx);
+           //qDebug() << "grasping diff2d enter 2\n";
+           util::diff2D(dx, ddx);
+           //qDebug() << " grasping var2d enter 1\n";
+           util::var2D(dx, &varX, &varY);
+           //qDebug() << "grasping curvature enter 1\n";
+           util::curvature(dx, ddx, Curvature);
+           //qDebug() << "grasping curvature max count enter\n";
+           util::curvatureMaxnCount(Curvature, &curvatureMax, &curvatureMaxCount);
+           //qDebug() << "grasping arclength enter\n";
+           util::arclength(dx, &arcLength);
 
            result.grasping.curvatureMax.push_back(make_pair(result.grasping.trackingData[i].first, curvatureMax));
            result.grasping.arcLength.push_back(make_pair(result.grasping.trackingData[i].first, arcLength));
@@ -686,22 +693,22 @@ void qMainWindow::processData()
        {
            double varX = 0;
            double varY = 0;
-           double arcLength = (double)rand() / RAND_MAX;
-           double curvatureMax = (double)rand() / RAND_MAX;
-           int curvatureMaxCount = (double)rand() / RAND_MAX;
-//           vector<pair <double, double > > x;
-//           vector<pair <double, double > > dx;
-//           vector<pair <double, double > > ddx;
-//           vector<double> Curvature;
+           double arcLength = 0;
+           double curvatureMax = 0;
+           int curvatureMaxCount = 0;
+           vector<pair <double, double > > x;
+           vector<pair <double, double > > dx;
+           vector<pair <double, double > > ddx;
+           vector<double> Curvature;
 
-//           vector<pair <double, double > > data = result.wavymotion.trackingData[i].second;
-//           util::normalize2D(data, x);
-//           util::diff2D(x, dx);
-//           util::diff2D(dx, ddx);
-//           util::var2D(dx, &varX, &varY);
-//           util::curvature(dx, ddx, Curvature);
-//           util::curvatureMaxnCount(Curvature, &curvatureMax, &curvatureMaxCount);
-//           util::arclength(dx, &arcLength);
+           vector<pair <double, double > > data = result.wavymotion.trackingData[i].second;
+           util::normalize2D(data, x);
+           util::diff2D(x, dx);
+           util::diff2D(dx, ddx);
+           util::var2D(dx, &varX, &varY);
+           util::curvature(dx, ddx, Curvature);
+           util::curvatureMaxnCount(Curvature, &curvatureMax, &curvatureMaxCount);
+           util::arclength(dx, &arcLength);
 
            result.wavymotion.curvatureMax.push_back(make_pair(result.wavymotion.trackingData[i].first, curvatureMax));
            result.wavymotion.arcLength.push_back(make_pair(result.wavymotion.trackingData[i].first, arcLength));
@@ -736,8 +743,7 @@ void qMainWindow::showData()
     for(int i = 0; i < result.hitting.hittingData.size(); i++)
     {
         QString d = QString::fromStdString(result.hitting.hittingData[i].first) + "," +
-                       QString::number(result.hitting.hittingData[i].second.first) + "," +
-                       QString::number(result.hitting.hittingData[i].second.first);
+                       QString::number(result.hitting.hittingData[i].second);
 
         QStandardItem *child = new QStandardItem(d);
         child->setEditable( false );
@@ -802,7 +808,6 @@ void qMainWindow::showData()
     view->expandAll();
     this->centralWidget()->close();
     this->setCentralWidget(view);
-
     //m_showResult->setString(ResultString);
     //m_showResult->show();
 }
@@ -810,6 +815,7 @@ void qMainWindow::showData()
 
 void qMainWindow::on_actionStop_2_triggered()
 {
+    writeData("z\n");
     writeData("z\n");
     mProducer_aux->sendFrame = false;
     mProducer_endo->sendFrame = false;
@@ -842,9 +848,8 @@ void qMainWindow::on_actionStop_2_triggered()
         ui->statusBar->showMessage("Activity done. Processing data for the scoring ...");
 
         processData();
-        //saveData();
+        saveData();
         showData();
-
     }
     usleep(1000000);
     ui->actionStop_2->setEnabled(false);
@@ -969,6 +974,10 @@ void qMainWindow::readData()
 
 void qMainWindow::updateScreen(const myMat &image)
 {
+    if(tempVar)
+    {
+        cv::imwrite("temp.png", image);
+    }
     if( mFlipVert && mFlipHoriz )
         cv::flip( image,image, -1);
     else if( mFlipVert )
@@ -976,6 +985,7 @@ void qMainWindow::updateScreen(const myMat &image)
     else if( mFlipHoriz )
         cv::flip( image,image, 1);
     ui->openCVviewer->showImage( image );
+
 }
 
 void qMainWindow::cleanup()
@@ -1035,8 +1045,6 @@ qMainWindow::~qMainWindow()
     closeSerialPort();
     delete serial;
     delete ui;
-
-
 }
 
 void qMainWindow::on_action_Vertical_Flip_toggled(bool checked)
@@ -1123,15 +1131,17 @@ const string qMainWindow::currentDateTime()
 
 void qMainWindow::on_actionTemp_triggered()
 {
-    writeData("j\n");
+    //writeData("j\n");
+    tempVar = true;
 }
 
 void qMainWindow::on_actionTemp2_triggered()
 {
-    qDebug() << "Aux producer running? -> " << mThread_aux_producer->isRunning();
-    qDebug() << "Aux producer finished? -> " << mThread_aux_producer->isFinished();
+     tempVar = true;
+    //qDebug() << "Aux producer running? -> " << mThread_aux_producer->isRunning();
+    //qDebug() << "Aux producer finished? -> " << mThread_aux_producer->isFinished();
 
-    qDebug() << "Endo producer running? -> " << mThread_endo_producer->isRunning();
-    qDebug() << "Endo producer finished? -> " << mThread_endo_producer->isFinished();
+    //qDebug() << "Endo producer running? -> " << mThread_endo_producer->isRunning();
+    //qDebug() << "Endo producer finished? -> " << mThread_endo_producer->isFinished();
 }
 

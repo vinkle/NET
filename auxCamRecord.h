@@ -38,7 +38,7 @@ typedef Pylon::CBaslerGigEInstantCamera Camera_t;
 #define THRESH_PICKING_TO_PICKING 200000
 #define THRESH_PICKING_TO_MOVING 5000
 #define STABLE_COUNT 50
-#define No_pegs 11
+#define No_pegs 12
 
 class auxCamRecord_producer:public QObject
 {

@@ -172,10 +172,6 @@ void auxCamRecord_producer::track(const cv::Mat &current_frame)
             startMedFlowTracker = true;
             medianFlowInit(current_frame, &p);
         }
-        else
-        {
-            sendTrackingStatus("Tracking lost");
-        }
     }
     else
     {
@@ -271,7 +267,6 @@ bool auxCamRecord_producer::initialize(const params &par, string &errmsg,
                 camera.ExposureTimeAbs.SetValue(2000);
                 camera.ExposureTimeRaw.SetValue(2000);
                 camera.AcquisitionFrameRateAbs.SetValue(50);
-
                 camera.StartGrabbing(c_countOfImagesToGrab);
             }
             errmsg = "Using device " + camera.GetDeviceInfo().GetModelName();
@@ -335,7 +330,6 @@ bool auxCamRecord_producer::initialize(const params &par, string &errmsg,
             return false;
         }
     }
-
     return true;
 }
 
@@ -368,7 +362,6 @@ string auxCamRecord_producer::getState(const cv::Mat &current_frame)
     dilate(mask_out, mask_out, element[0]);
     erode(mask_out, mask_out, element[2]);
     dilate(mask_out, mask_out, element[0]);
-
     if(indexSet)
     {
         indexSet = false;
@@ -378,8 +371,8 @@ string auxCamRecord_producer::getState(const cv::Mat &current_frame)
             cv::Mat p1 = mask_out(rect(pegRectBoxBig[i]));
             double s = cv::sum(p)[0];
             double s1 = cv::sum(p1)[0];
-            qDebug() << "sum at small "  << i+1 << " is " << s;
-            qDebug() << "sum at big "  << i+1 << " is " << s1;
+            //qDebug() << "sum at small "  << i+1 << " is " << s;
+            //qDebug() << "sum at big "  << i+1 << " is " << s1;
             if(s > THRESH_RING_SEGMENT_ON) // put the threshold
             {
                 old_index = i+1;
@@ -495,25 +488,32 @@ void auxCamRecord_producer::processFrame(const cv::Mat &current_frame)
     if(m_eval)
     {
         // lgogging info
-
         track(current_frame);
         //Rect pp = blobTrack(current_frame);
-        Mat aa = current_frame.clone();
-        if(currBB != NULL)
-        {
-            rectangle(aa, *currBB, Scalar(255,0,0), 2);
-        }
+        //Mat aa = current_frame.clone();
+        //if(currBB != NULL)
+        //{
+        //    rectangle(aa, *currBB, Scalar(255,0,0), 2);
+        //}
 
+        Mat aa = current_frame.clone();
+        for(int i = 0; i < pegRectBoxSmall.size(); i++)
+        {
+            cv::Rect rRect(pegRectBoxSmall[i].x(), pegRectBoxSmall[i].y(), pegRectBoxSmall[i].width(), pegRectBoxSmall[i].height());
+            cv::rectangle(aa, rRect, Scalar(255,0,0), 2);
+        }
         if(sendFrame)
             emit sendtoUI(aa);
 
         if(currBB != NULL)
         {
             trackingData.push_back(make_pair(currentDateTime(), make_pair(currBB->x + ((double)currBB->width/2.0), currBB->y + ((double)currBB->height/2.0))));
+            sendTrackingStatus("Tracking active: Status -> " + QString::fromStdString(status) + " ");
         }
         else
         {
             trackingData.push_back(make_pair(currentDateTime(), make_pair(-1, -1)));
+            sendTrackingStatus("Tracking LOST : Status -> " + QString::fromStdString(status) + " ");
         }
         if(status == "stationary")
         {
@@ -579,9 +579,8 @@ void auxCamRecord_producer::process()
                     vec_frame_ax_rgb[i] = img3u;
                     usleep(10);
                     processFrame(img3u);
-//                    if(sendFrame)
-//                        emit sendtoUI(img3u);
-
+                    //if(sendFrame)
+                    //    emit sendtoUI(img3u);
                 }
                 else
                 {
@@ -749,7 +748,6 @@ void auxCamRecord_consumer::process()
                     videoWriter.write(vec_frame_consume[i]);
                     timestamp_aux.push_back("Aux " + num2str(++no_of_frames) + " " + currentDateTime() );
                     usleep(10);
-
                 }
             }
             else

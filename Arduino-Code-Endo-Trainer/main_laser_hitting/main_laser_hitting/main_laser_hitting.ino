@@ -32,7 +32,7 @@
 #define Keypad_col2 6       //pin 6(A6) of MCP20017  using library Keypad_MC17
 #define Keypad_col3 7       //pin 7(A7) of MCP20017  using library Keypad_MC17
 #define FORCE_THRESHOLD 300
-
+#define Default_Angle 84
 LiquidCrystal lcd(LCD_E, LCD_RS, LCD_D4, LCD_D5, LCD_D6, LCD_D7);
 const int channel_laser[4] = { LASER_C0_i2c, LASER_C1_i2c, LASER_C2_i2c, LASER_C3_i2c };
 int muxChannel[16][4] =
@@ -172,7 +172,7 @@ void loop()
       {
         enterStart = true;
         lcd.clear();
-        lcd.print(" Follow Red Dot");
+        lcd.print("..Processing..");
       }
       press_start();
     }
@@ -296,6 +296,12 @@ void press_start()
       servo_pos = servo_pos - random(0, 20);
       myservo.write(servo_pos);
     }
+    else if(inputString[0] == 'y')
+    {
+      servo_pos = 84;
+      myservo.write(servo_pos);
+    }
+    
 }
 
 

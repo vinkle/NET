@@ -160,6 +160,7 @@ private:
     QTime startTime;
     int TotalTimeinMs;
     bool sendtoDB;
+    bool tempVar;
 protected:
     //void timerEvent(QTimerEvent *event);
 };
