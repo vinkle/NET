@@ -50,8 +50,6 @@ signals:
 public slots:
      // Event loop function
      void process();
-
-
 private:
     bool m_eval;
     bool m_abort;

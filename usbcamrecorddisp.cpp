@@ -71,7 +71,6 @@ void usbCamRecordDisp_producer::process()
             //cout << "In cam_endo_producer\n";
             usleep(10);
         }
-
     }
 
     // off the stream and close the camera
@@ -172,7 +171,7 @@ void usbCamRecordDisp_consumer::process()
                         startdumping = true;
                     }
                     video.write(vec_frame_consume[i]);
-                    timestamp_endo.push_back("Endo " + num2str(++no_of_frames) + " " + currentDateTime() );
+                    timestamp_endo.push_back("Endo " + num2str(++no_of_frames) + " " + currentDateTime());
                     usleep(10);
                 }
             }

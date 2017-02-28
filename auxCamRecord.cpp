@@ -368,9 +368,9 @@ string auxCamRecord_producer::getState(const cv::Mat &current_frame)
         for(int i = 0; i < pegRectBoxSmall.size(); i++)
         {
             cv::Mat p = mask_out(rect(pegRectBoxSmall[i]));
-            cv::Mat p1 = mask_out(rect(pegRectBoxBig[i]));
+            //cv::Mat p1 = mask_out(rect(pegRectBoxBig[i]));
             double s = cv::sum(p)[0];
-            double s1 = cv::sum(p1)[0];
+            //double s1 = cv::sum(p1)[0];
             //qDebug() << "sum at small "  << i+1 << " is " << s;
             //qDebug() << "sum at big "  << i+1 << " is " << s1;
             if(s > THRESH_RING_SEGMENT_ON) // put the threshold
