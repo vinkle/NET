@@ -57,7 +57,6 @@ void auxCamRecord_producer::medianFlowInit(const cv::Mat &img, Rect *bb)
     {
         currImg = img.clone();
     }
-
     if(currBB)
     {
         delete currBB;
@@ -264,8 +263,8 @@ bool auxCamRecord_producer::initialize(const params &par, string &errmsg,
                 camera.BalanceRatioRaw.SetValue(88);
                 camera.ColorTransformationMatrixFactor.SetValue(1);
                 camera.ColorTransformationMatrixFactorRaw.SetValue(65536);
-                camera.ExposureTimeAbs.SetValue(2000);
-                camera.ExposureTimeRaw.SetValue(2000);
+                camera.ExposureTimeAbs.SetValue(1500);
+                camera.ExposureTimeRaw.SetValue(1500);
                 camera.AcquisitionFrameRateAbs.SetValue(50);
                 camera.StartGrabbing(c_countOfImagesToGrab);
             }
@@ -477,6 +476,7 @@ string auxCamRecord_producer::getState(const cv::Mat &current_frame)
         else
         {
             status = "moving";
+            changeLEDIndex(current_index);
         }
     }
     return status;
@@ -489,19 +489,16 @@ void auxCamRecord_producer::processFrame(const cv::Mat &current_frame)
     {
         // lgogging info
         track(current_frame);
-        //Rect pp = blobTrack(current_frame);
-        //Mat aa = current_frame.clone();
-        //if(currBB != NULL)
-        //{
-        //    rectangle(aa, *currBB, Scalar(255,0,0), 2);
-        //}
 
+
+        //Rect pp = blobTrack(current_frame);
         Mat aa = current_frame.clone();
-        for(int i = 0; i < pegRectBoxSmall.size(); i++)
+        if(currBB != NULL)
         {
-            cv::Rect rRect(pegRectBoxSmall[i].x(), pegRectBoxSmall[i].y(), pegRectBoxSmall[i].width(), pegRectBoxSmall[i].height());
-            cv::rectangle(aa, rRect, Scalar(255,0,0), 2);
+            rectangle(aa, *currBB, Scalar(255,0,0), 2);
         }
+
+
         if(sendFrame)
             emit sendtoUI(aa);
 
@@ -515,6 +512,8 @@ void auxCamRecord_producer::processFrame(const cv::Mat &current_frame)
             trackingData.push_back(make_pair(currentDateTime(), make_pair(-1, -1)));
             sendTrackingStatus("Tracking LOST : Status -> " + QString::fromStdString(status) + " ");
         }
+
+
         if(status == "stationary")
         {
             stateInfo.push_back(make_pair(make_pair(currentDateTime(), ++countFrame), "St:S"));
@@ -529,6 +528,8 @@ void auxCamRecord_producer::processFrame(const cv::Mat &current_frame)
             QString v = "St:M," + QString::number(old_index) + "," + QString::number(current_index);
             stateInfo.push_back(make_pair(make_pair(currentDateTime(), ++countFrame), v.toStdString()));
         }
+        // get the hitting info
+        // get the tugging info
     }
 }
 
@@ -537,6 +538,7 @@ void auxCamRecord_producer::process()
     //std::vector<unsigned char> temp_rgb(size_1_rgb);
     std::vector<Mat> vec_frame_ax_rgb(size_bin_aux);
     Mat img3u = Mat::zeros(rows, cols, CV_8UC3);
+    //Mat img3u_prv = Mat::zeros(rows, cols, CV_8UC3);
     unsigned char* color = img3u.ptr<unsigned char>(0);
 
     char *lastBuffer;

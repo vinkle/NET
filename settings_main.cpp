@@ -69,10 +69,7 @@ settings_main::settings_main(QWidget *parent) :
         QMessageBox::critical(this, tr("Error"), "Database connection failure. Exiting the application...");
         exit(0);
     }
-
-
     ui->txtDetails->setText(QDate::currentDate().toString());
-
     //serial port stuff
     serial = new QSerialPort(this);
     connect(serial, SIGNAL(error(QSerialPort::SerialPortError)), this, SLOT(handleError(QSerialPort::SerialPortError)));
@@ -80,9 +77,7 @@ settings_main::settings_main(QWidget *parent) :
     usleep(1000000);
     ui->groupBox_2->hide();
     updateNames();
-
     //qDebug() << "time in ms " << timeClass::timeSpentinMillis("13:16:25:500", "13:14:10:999") << endl;
-
     filename_auxCamCalib = "/calib_files/aux_CamCalib_Straight.txt";
     parse_AuxCamCalib(filename_auxCamCalib);
     //writeData("z\n");
@@ -1403,6 +1398,7 @@ void settings_main::on_sliderToolSegment_valueChanged(int value)
         scene_aux->clear();
         scene_aux->addPixmap(QPixmap::fromImage(AuxImg));
         tool_segment = value;
+        qDebug() << "tool_segment value" << tool_segment << endl;
     }
 }
 

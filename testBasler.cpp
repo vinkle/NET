@@ -43,8 +43,8 @@ bool testBasler::initialize(params &param, string &errmsg)
             camera.BalanceRatioRaw.SetValue(88);
             camera.ColorTransformationMatrixFactor.SetValue(1);
             camera.ColorTransformationMatrixFactorRaw.SetValue(65536);
-            camera.ExposureTimeAbs.SetValue(2000);
-            camera.ExposureTimeRaw.SetValue(2000);
+            camera.ExposureTimeAbs.SetValue(1500);
+            camera.ExposureTimeRaw.SetValue(1500);
             camera.AcquisitionFrameRateAbs.SetValue(50);
 
             cout << "basler width ->" << ptrGrabResult->GetWidth();

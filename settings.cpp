@@ -84,7 +84,6 @@ void settings::parseStringtoNumbers(const QString & str1, vector<int> &numbers, 
         if(count == numOfValues)
             break;
     }
-
 }
 
 

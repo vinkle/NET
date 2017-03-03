@@ -115,7 +115,6 @@ LIBS += -lopencv_legacy
 LIBS += -lopencv_ml
 LIBS += -lopencv_nonfree
 LIBS += -lopencv_objdetect
-LIBS += -lopencv_ocl
 LIBS += -lopencv_photo
 LIBS += -lopencv_stitching
 LIBS += -lopencv_superres
