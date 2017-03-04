@@ -484,50 +484,50 @@ string auxCamRecord_producer::getState(const cv::Mat &current_frame)
 
 void auxCamRecord_producer::processFrame(const cv::Mat &current_frame)
 {
-    getState(current_frame);
+    //getState(current_frame);
     if(m_eval)
     {
         // lgogging info
-        track(current_frame);
+        //track(current_frame);
 
 
         //Rect pp = blobTrack(current_frame);
         Mat aa = current_frame.clone();
-        if(currBB != NULL)
-        {
-            rectangle(aa, *currBB, Scalar(255,0,0), 2);
-        }
-
+        cout << "aa size " << aa.size() << endl;
+        //if(currBB != NULL)
+        //{
+        //    rectangle(aa, *currBB, Scalar(255,0,0), 2);
+        //}
 
         if(sendFrame)
             emit sendtoUI(aa);
 
-        if(currBB != NULL)
-        {
-            trackingData.push_back(make_pair(currentDateTime(), make_pair(currBB->x + ((double)currBB->width/2.0), currBB->y + ((double)currBB->height/2.0))));
-            sendTrackingStatus("Tracking active: Status -> " + QString::fromStdString(status) + " ");
-        }
-        else
-        {
-            trackingData.push_back(make_pair(currentDateTime(), make_pair(-1, -1)));
-            sendTrackingStatus("Tracking LOST : Status -> " + QString::fromStdString(status) + " ");
-        }
+//        if(currBB != NULL)
+//        {
+//            trackingData.push_back(make_pair(currentDateTime(), make_pair(currBB->x + ((double)currBB->width/2.0), currBB->y + ((double)currBB->height/2.0))));
+//            sendTrackingStatus("Tracking active: Status -> " + QString::fromStdString(status) + " ");
+//        }
+//        else
+//        {
+//            trackingData.push_back(make_pair(currentDateTime(), make_pair(-1, -1)));
+//            sendTrackingStatus("Tracking LOST : Status -> " + QString::fromStdString(status) + " ");
+//        }
 
 
-        if(status == "stationary")
-        {
-            stateInfo.push_back(make_pair(make_pair(currentDateTime(), ++countFrame), "St:S"));
-        }
-        else if(status == "picking")
-        {
-            QString v = "St:P," + QString::number(old_index);
-            stateInfo.push_back(make_pair(make_pair(currentDateTime(), ++countFrame), v.toStdString()));
-        }
-        else if(status == "moving")
-        {
-            QString v = "St:M," + QString::number(old_index) + "," + QString::number(current_index);
-            stateInfo.push_back(make_pair(make_pair(currentDateTime(), ++countFrame), v.toStdString()));
-        }
+//        if(status == "stationary")
+//        {
+//            stateInfo.push_back(make_pair(make_pair(currentDateTime(), ++countFrame), "St:S"));
+//        }
+//        else if(status == "picking")
+//        {
+//            QString v = "St:P," + QString::number(old_index);
+//            stateInfo.push_back(make_pair(make_pair(currentDateTime(), ++countFrame), v.toStdString()));
+//        }
+//        else if(status == "moving")
+//        {
+//            QString v = "St:M," + QString::number(old_index) + "," + QString::number(current_index);
+//            stateInfo.push_back(make_pair(make_pair(currentDateTime(), ++countFrame), v.toStdString()));
+//        }
         // get the hitting info
         // get the tugging info
     }
@@ -537,7 +537,7 @@ void auxCamRecord_producer::process()
 {
     //std::vector<unsigned char> temp_rgb(size_1_rgb);
     std::vector<Mat> vec_frame_ax_rgb(size_bin_aux);
-    Mat img3u = Mat::zeros(rows, cols, CV_8UC3);
+    Mat img3u = Mat::zeros(rows/2, cols/2, CV_8UC3);
     //Mat img3u_prv = Mat::zeros(rows, cols, CV_8UC3);
     unsigned char* color = img3u.ptr<unsigned char>(0);
 
@@ -558,24 +558,73 @@ void auxCamRecord_producer::process()
                     //cout << "Grab succeed\n";
                     const uchar *pImageBuffer = (uchar *)ptrGrabResult->GetBuffer();
                     // conversion from yuv to rgb;
-                    for(unsigned int k = 0, p = 0; k < size_1_yuv; k = k + 4, p = p + 6)
+                    unsigned int eff_yuv_width = cols*2;
+                    unsigned int eff_rgb_width = (cols/2)*3;
+                    for(unsigned int d = 0, dd = 0; d < rows - 1; dd = dd + 1, d = d + 2)
                     {
-                        int zero = 0; int max_1 = 255;
-                        float Cr = static_cast<float>(static_cast<unsigned int>(pImageBuffer[k]));
-                        float Y0 = static_cast<float>(static_cast<unsigned int>(pImageBuffer[k + 1]));
-                        float Cb = static_cast<float>(static_cast<unsigned int>(pImageBuffer[k + 2]));
-                        float Y1 = static_cast<float>(static_cast<unsigned int>(pImageBuffer[k + 3]));
-                        uint8_t r1 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y0)+1.403f*(Cb - 128))));
-                        uint8_t g1 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y0)-0.344f*(Cr - 128) - 0.714f*(Cb - 128))));
-                        uint8_t b1 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y0)+1.773f*(Cr - 128))));
-                        uint8_t r2 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y1)+1.403f*(Cb - 128))));
-                        uint8_t g2 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y1)-0.344f*(Cr - 128) - 0.714f*(Cb - 128))));
-                        uint8_t b2 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y1)+1.773f*(Cr - 128))));
-                        //temp_rgb[p] = b1; temp_rgb[p + 1] = g1; temp_rgb[p + 2] = r1;
-                        //temp_rgb[p + 3] = b2; temp_rgb[p + 4] = g2; temp_rgb[p + 5] = r2;
-                        color[p] = b1; color[p + 1] = g1; color[p + 2] = r1;
-                        color[p + 3] = b2; color[p + 4] = g2; color[p + 5] = r2;
+                        //qDebug() << "d " << d << endl;
+                        for(unsigned int k = 0, p = 0; k < eff_yuv_width; k = k + 4, p = p + 3)
+                        {
+                            int zero = 0; int max_1 = 255;
+                            float Cr = static_cast<float>(static_cast<unsigned int>(pImageBuffer[(d * eff_yuv_width) + (k)]));
+                            float Y0 = static_cast<float>(static_cast<unsigned int>(pImageBuffer[(d * eff_yuv_width) + (k + 1)]));
+                            float Cb = static_cast<float>(static_cast<unsigned int>(pImageBuffer[(d * eff_yuv_width) + (k + 2)]));
+                            float Y1 = static_cast<float>(static_cast<unsigned int>(pImageBuffer[(d * eff_yuv_width) + (k + 3)]));
+
+                            float Cr_1 = static_cast<float>(static_cast<unsigned int>(pImageBuffer[((d+1) * eff_yuv_width) + (k)]));
+                            float Y0_1 = static_cast<float>(static_cast<unsigned int>(pImageBuffer[((d+1) * eff_yuv_width) + (k + 1)]));
+                            float Cb_1 = static_cast<float>(static_cast<unsigned int>(pImageBuffer[((d+1) * eff_yuv_width) + (k + 2)]));
+                            float Y1_1 = static_cast<float>(static_cast<unsigned int>(pImageBuffer[((d+1) * eff_yuv_width) + (k + 3)]));
+
+
+                            float rr1 = (Y0)+1.403f*(Cb - 128);
+                            float gg1 = (Y0)-0.344f*(Cr - 128) - 0.714f*(Cb - 128);
+                            float bb1 = (Y0)+1.773f*(Cr - 128);
+                            float rr2 = (Y1)+1.403f*(Cb - 128);
+                            float gg2 = (Y1)-0.344f*(Cr - 128) - 0.714f*(Cb - 128);
+                            float bb2 = (Y1)+1.773f*(Cr - 128);
+
+                            float rr3 = (Y0_1)+1.403f*(Cb_1 - 128);
+                            float gg3 = (Y0_1)-0.344f*(Cr_1 - 128) - 0.714f*(Cb_1 - 128);
+                            float bb3 = (Y0_1)+1.773f*(Cr_1 - 128);
+                            float rr4 = (Y1_1)+1.403f*(Cb_1 - 128);
+                            float gg4 = (Y1_1)-0.344f*(Cr_1 - 128) - 0.714f*(Cb_1 - 128);
+                            float bb4 = (Y1_1)+1.773f*(Cr_1 - 128);
+
+                            float rr = (rr1 + rr2 + rr3 + rr4) / 4.0;
+                            float gg = (gg1 + gg2 + gg3 + gg4) / 4.0;
+                            float bb = (bb1 + bb2 + bb3 + bb4) / 4.0;
+                            //qDebug () << "Conversion done" << endl;
+                            uint8_t r = (uint8_t)max(zero, min(max_1, static_cast<int>(rr)));
+                            uint8_t g = (uint8_t)max(zero, min(max_1, static_cast<int>(gg)));
+                            uint8_t b = (uint8_t)max(zero, min(max_1, static_cast<int>(bb)));
+
+                            color[(dd * eff_rgb_width) + (p)] = b;
+                            color[(dd * eff_rgb_width) + (p + 1)] = g;
+                            color[(dd * eff_rgb_width)+ (p + 2)] = r;
+                            //qDebug () << "k" << k << " loop done" << endl;
+                        }
                     }
+
+
+//                    for(unsigned int k = 0, p = 0; k < size_1_yuv; k = k + 4, p = p + 6)
+//                    {
+//                        int zero = 0; int max_1 = 255;
+//                        float Cr = static_cast<float>(static_cast<unsigned int>(pImageBuffer[k]));
+//                        float Y0 = static_cast<float>(static_cast<unsigned int>(pImageBuffer[k + 1]));
+//                        float Cb = static_cast<float>(static_cast<unsigned int>(pImageBuffer[k + 2]));
+//                        float Y1 = static_cast<float>(static_cast<unsigned int>(pImageBuffer[k + 3]));
+//                        uint8_t r1 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y0)+1.403f*(Cb - 128))));
+//                        uint8_t g1 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y0)-0.344f*(Cr - 128) - 0.714f*(Cb - 128))));
+//                        uint8_t b1 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y0)+1.773f*(Cr - 128))));
+//                        uint8_t r2 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y1)+1.403f*(Cb - 128))));
+//                        uint8_t g2 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y1)-0.344f*(Cr - 128) - 0.714f*(Cb - 128))));
+//                        uint8_t b2 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y1)+1.773f*(Cr - 128))));
+//                        //temp_rgb[p] = b1; temp_rgb[p + 1] = g1; temp_rgb[p + 2] = r1;
+//                        //temp_rgb[p + 3] = b2; temp_rgb[p + 4] = g2; temp_rgb[p + 5] = r2;
+//                        color[p] = b1; color[p + 1] = g1; color[p + 2] = r1;
+//                        color[p + 3] = b2; color[p + 4] = g2; color[p + 5] = r2;
+//                    }
                     //cout << "conversion complete\n";
                     //std::copy ( temp_rgb.begin(), temp_rgb.begin() + (size_1_rgb), vec_frame_ax_rgb.begin() + ((i) * (size_1_rgb)));
                     vec_frame_ax_rgb[i] = img3u;
