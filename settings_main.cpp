@@ -201,26 +201,26 @@ void settings_main::parse_AuxCamCalib(const QString &filename)
                 QStringList fields = line.split(",");
                 if(fields[0] == "Bounding Rect")
                 {
-                    int x = fields[1].toInt();
-                    int y = fields[2].toInt();
-                    int w = fields[3].toInt();
-                    int h = fields[4].toInt();
+                    int x = fields[1].toInt() / 2;
+                    int y = fields[2].toInt() / 2;
+                    int w = fields[3].toInt() / 2;
+                    int h = fields[4].toInt() / 2;
                     boundingRectangle.setRect(x, y, w, h);
                 }
                 else if(fields[0] == "Pegs Rect small")
                 {
-                    int x = fields[1].toInt();
-                    int y = fields[2].toInt();
-                    int w = fields[3].toInt();
-                    int h = fields[4].toInt();
+                    int x = fields[1].toInt() / 2;
+                    int y = fields[2].toInt() / 2;
+                    int w = fields[3].toInt() / 2;
+                    int h = fields[4].toInt() / 2;
                     pegs_small[count1++].setRect(x, y, w, h);
                 }
                 else if(fields[0] == "Pegs Rect big")
                 {
-                    int x = fields[1].toInt();
-                    int y = fields[2].toInt();
-                    int w = fields[3].toInt();
-                    int h = fields[4].toInt();
+                    int x = fields[1].toInt() / 2;
+                    int y = fields[2].toInt() / 2;
+                    int w = fields[3].toInt() / 2;
+                    int h = fields[4].toInt()/ 2;
                     pegs_big[count2++].setRect(x, y, w, h);
                 }
                 else if(fields[0] == "with ring thresh")
@@ -509,9 +509,9 @@ void settings_main::updatelblAux(const myMat &lblImg)
         for(int i = 0; i < pegs_small.size(); i++)
         {
 
-            QRect r(pegs_small[i].x()/4, pegs_small[i].y()/4, pegs_small[i].width()/4, pegs_small[i].height()/4);
+            QRect r(pegs_small[i].x()/2, pegs_small[i].y()/2, pegs_small[i].width()/2, pegs_small[i].height()/2);
             scene_aux->addRect(r, QPen(QColor(255, 255,0)));
-            //r.setRect(pegs_big[i].x()/4, pegs_big[i].y()/4, pegs_big[i].width()/4, pegs_big[i].height()/4);
+            //r.setRect(pegs_big[i].x()/2, pegs_big[i].y()/2, pegs_big[i].width()/2, pegs_big[i].height()/2);
             //scene_aux->addRect(r, QPen(QColor(255, 0,255)));
         }
     }

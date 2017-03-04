@@ -24,6 +24,7 @@
 #include <QDebug>
 #include "params.h"
 #include <QDir>
+#include <QTime>
 #include "tracker/MedianFlowTracker.h"
 
 using namespace std;
@@ -56,7 +57,7 @@ public:
     void evaluate();
     void abort();
     void grab();
-    void processFrame(const cv::Mat &current_frame);
+    void processFrame(const cv::Mat &prv_frame, const cv::Mat &current_frame);
     const string currentDateTime();
     Rect blobTrack(const cv::Mat &current_frame);
     void medianFlowTrack(const cv::Mat &);
@@ -137,6 +138,9 @@ private:
     int current_index, old_index;
     int countFrame;
     bool m_grab;
+
+    QTime trackingTimer;
+    Mat img3u, img3u_prv;
 };
 
 

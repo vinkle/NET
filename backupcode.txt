@@ -1,0 +1,24 @@
+// code without downsamppling
+
+//                    for(unsigned int k = 0, p = 0; k < size_1_yuv; k = k + 4, p = p + 6)
+//                    {
+//                        int zero = 0; int max_1 = 255;
+//                        float Cr = static_cast<float>(static_cast<unsigned int>(pImageBuffer[k]));
+//                        float Y0 = static_cast<float>(static_cast<unsigned int>(pImageBuffer[k + 1]));
+//                        float Cb = static_cast<float>(static_cast<unsigned int>(pImageBuffer[k + 2]));
+//                        float Y1 = static_cast<float>(static_cast<unsigned int>(pImageBuffer[k + 3]));
+//                        uint8_t r1 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y0)+1.403f*(Cb - 128))));
+//                        uint8_t g1 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y0)-0.344f*(Cr - 128) - 0.714f*(Cb - 128))));
+//                        uint8_t b1 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y0)+1.773f*(Cr - 128))));
+//                        uint8_t r2 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y1)+1.403f*(Cb - 128))));
+//                        uint8_t g2 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y1)-0.344f*(Cr - 128) - 0.714f*(Cb - 128))));
+//                        uint8_t b2 = (uint8_t)max(zero, min(max_1, static_cast<int>((Y1)+1.773f*(Cr - 128))));
+//                        //temp_rgb[p] = b1; temp_rgb[p + 1] = g1; temp_rgb[p + 2] = r1;
+//                        //temp_rgb[p + 3] = b2; temp_rgb[p + 4] = g2; temp_rgb[p + 5] = r2;
+//                        color[p] = b1; color[p + 1] = g1; color[p + 2] = r1;
+//                        color[p + 3] = b2; color[p + 4] = g2; color[p + 5] = r2;
+//                    }
+//                    cout << "conversion complete\n";
+//                    std::copy ( temp_rgb.begin(), temp_rgb.begin() + (size_1_rgb), vec_frame_ax_rgb.begin() + ((i) * (size_1_rgb)));
+
+

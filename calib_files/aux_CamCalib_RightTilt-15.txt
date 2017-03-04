@@ -48,4 +48,4 @@ without ring thresh,687225,1.80158e+06
 without ring thresh,694365,1.41423e+06
 without ring thresh,812940,1.46396e+06
 Threshold Ring,5
-Threshold Tool,62
+Threshold Tool,69
