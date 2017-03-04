@@ -20,6 +20,8 @@ auxCamRecord_producer::auxCamRecord_producer()
     currBB = NULL;
     prevBB = new Rect(0,0,0,0);
     medianFlowTracker = new MedianFlowTracker();
+    thresh = 50;
+    kernel = (Mat_<uchar>(3, 3) << 0, 1, 0, 1, 1, 1, 0, 1, 0);
 }
 auxCamRecord_producer::~auxCamRecord_producer()
 {
@@ -240,6 +242,11 @@ bool auxCamRecord_producer::initialize(const params &par, string &errmsg,
 
     img3u = Mat::zeros(rows/2, cols/2, CV_8UC3);
     img3u_prv = Mat::zeros(rows/2, cols/2, CV_8UC3);
+    smallImage_width = int(boundingRectangle.width() / 10.0);
+    smallImage_height = int(boundingRectangle.height() / 10.0);
+    // vars declaration
+    smallSize = cv::Size(smallImage_width, smallImage_height);
+
     if(deviceName == "basler")
     {
         try
@@ -485,71 +492,81 @@ string auxCamRecord_producer::getState(const cv::Mat &current_frame)
     return status;
 }
 
+int auxCamRecord_producer::hittingDetection(const cv::Mat &prv_frame, const cv::Mat &current_frame)
+{
+    vector<unsigned int> hittingData;
+    cv::absdiff(prv_frame, current_frame, diff);
+    diff = diff(rect(boundingRectangle));
+    // cout << "diff size->" << diff.size() << endl;
+    // edge detection and normalization
+    cv::Canny(diff, canny_output, thresh, thresh * 4, 3);
+    cv::normalize(canny_output, canny_output, 0, 1, cv::NORM_MINMAX);
+    cv::dilate(canny_output, dst, kernel);
+    cv::dilate(dst, dst, kernel);
+    cv::normalize(dst, dst, 0, 255, cv::NORM_MINMAX);
+
+    for (int y = 0; y < dst.rows - smallSize.height + 1; y += smallSize.height)
+    {
+        for (int x = 0; x < dst.cols - smallSize.width + 1; x += smallSize.width)
+        {
+            cv::Rect rect = cv::Rect(x, y, smallSize.width, smallSize.height);
+            Mat temp = dst(rect);
+            findContours(temp, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+            if (contours.size())
+            {
+                hittingData.push_back(contours.size());
+            }
+        }
+    }
+    return hittingData.size();
+    //qDebug() << "hittingData size -> " << hittingData.size() << endl;;
+    //if(sendFrame)
+    //    emit sendtoUI(dst);
+}
+
 void auxCamRecord_producer::processFrame(const cv::Mat &prv_frame, const cv::Mat &current_frame)
 {
-    //getState(current_frame);
+    stat.clear();
+    getState(current_frame);
     if(m_eval)
     {
-        // lgogging info
-//        trackingTimer.start();
-//        track(current_frame);
-//        int nMilliseconds = trackingTimer.elapsed();
-//        qDebug() << "Elapsed time per frame ->" << nMilliseconds << endl;
-
-
-        trackingTimer.start();
-        Rect pp = blobTrack(current_frame);
-        int nMilliseconds = trackingTimer.elapsed();
-        qDebug() << "Elapsed time per frame ->" << nMilliseconds << endl;
-
-        Mat aa = current_frame.clone();
-//        for(int i = 0; i < pegRectBoxSmall.size(); i++)
-//        {
-//            cv::Rect rRect(pegRectBoxSmall[i].x(), pegRectBoxSmall[i].y(), pegRectBoxSmall[i].width(), pegRectBoxSmall[i].height());
-//            rectangle(aa, rRect, Scalar(255,0,0), 2);
-//        }
-//        if(currBB != NULL)
-//        {
-//            rectangle(aa, *currBB, Scalar(255,255,0), 2);
-//        }
-        if(pp.width != -1)
+        int hittingOut = hittingDetection(prv_frame, current_frame);
+        Rect trackOut = blobTrack(current_frame);
+        string dt = currentDateTime();
+        if(trackOut.width != -1)
         {
-            rectangle(aa, pp, Scalar(0,0,255), 2);
+            trackingData.push_back(make_pair(dt, make_pair(trackOut.x + ((double)trackOut.width/2.0), trackOut.y + ((double)trackOut.height/2.0))));
+            stat = "Tracking active: Status -> " + QString::fromStdString(status) + " ";
+        }
+        else
+        {
+            trackingData.push_back(make_pair(dt, make_pair(-1, -1)));
+            stat = "Tracking LOST : Status -> " + QString::fromStdString(status) + " ";
+        }
+        if(hittingOut > HITTING_THRESHOLD)
+        {
+            hittingData_fdiff.push_back(make_pair(dt, hittingOut));
+            stat += "Hitting Detected ";
+        }
+        if(status == "stationary")
+        {
+            stateInfo.push_back(make_pair(make_pair(dt, ++countFrame), "St:S"));
+        }
+        else if(status == "picking")
+        {
+            QString v = "St:P," + QString::number(old_index);
+            stateInfo.push_back(make_pair(make_pair(dt, ++countFrame), v.toStdString()));
+        }
+        else if(status == "moving")
+        {
+            QString v = "St:M," + QString::number(old_index) + "," + QString::number(current_index);
+            stateInfo.push_back(make_pair(make_pair(dt, ++countFrame), v.toStdString()));
         }
 
-
-
         if(sendFrame)
-            emit sendtoUI(aa);
+            emit sendtoUI(current_frame);
 
-//        if(currBB != NULL)
-//        {
-//            trackingData.push_back(make_pair(currentDateTime(), make_pair(currBB->x + ((double)currBB->width/2.0), currBB->y + ((double)currBB->height/2.0))));
-//            sendTrackingStatus("Tracking active: Status -> " + QString::fromStdString(status) + " ");
-//        }
-//        else
-//        {
-//            trackingData.push_back(make_pair(currentDateTime(), make_pair(-1, -1)));
-//            sendTrackingStatus("Tracking LOST : Status -> " + QString::fromStdString(status) + " ");
-//        }
-
-
-//        if(status == "stationary")
-//        {
-//            stateInfo.push_back(make_pair(make_pair(currentDateTime(), ++countFrame), "St:S"));
-//        }
-//        else if(status == "picking")
-//        {
-//            QString v = "St:P," + QString::number(old_index);
-//            stateInfo.push_back(make_pair(make_pair(currentDateTime(), ++countFrame), v.toStdString()));
-//        }
-//        else if(status == "moving")
-//        {
-//            QString v = "St:M," + QString::number(old_index) + "," + QString::number(current_index);
-//            stateInfo.push_back(make_pair(make_pair(currentDateTime(), ++countFrame), v.toStdString()));
-//        }
-        // get the hitting info
-        // get the tugging info
+        sendTrackingStatus(stat);
     }
 }
 

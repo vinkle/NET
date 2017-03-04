@@ -40,7 +40,7 @@ typedef Pylon::CBaslerGigEInstantCamera Camera_t;
 #define THRESH_PICKING_TO_MOVING 5000
 #define STABLE_COUNT 50
 #define No_pegs 12
-
+#define HITTING_THRESHOLD 5
 class auxCamRecord_producer:public QObject
 {
     Q_OBJECT
@@ -58,6 +58,7 @@ public:
     void abort();
     void grab();
     void processFrame(const cv::Mat &prv_frame, const cv::Mat &current_frame);
+    int hittingDetection(const cv::Mat &prv_frame, const cv::Mat &current_frame);
     const string currentDateTime();
     Rect blobTrack(const cv::Mat &current_frame);
     void medianFlowTrack(const cv::Mat &);
@@ -65,6 +66,7 @@ public:
     void track(const cv::Mat &current_frame);
     bool sendFrame;
     vector<pair<string, pair<double, double> > > trackingData;
+    vector<pair<string, int > > hittingData_fdiff;
     vector<pair<pair<string, int>, string> >  stateInfo; //timestamp, count, state
     // dtor
     ~auxCamRecord_producer();
@@ -141,6 +143,15 @@ private:
 
     QTime trackingTimer;
     Mat img3u, img3u_prv;
+    Mat diff, canny_output, dst;
+    int thresh;
+    Mat kernel;
+    vector<vector<Point> > contours;
+    vector<Vec4i> hierarchy;
+    int smallImage_width, smallImage_height;
+    cv::Size smallSize;
+    QString stat;
+
 };
 
 
