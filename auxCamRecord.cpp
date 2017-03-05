@@ -7,7 +7,7 @@ auxCamRecord_producer::auxCamRecord_producer()
     current_index =  (rand() % (int)(No_pegs)) + 1;
     //current_index = 7;
     element[0] = getStructuringElement(MORPH_ELLIPSE, Size(3, 3), Point(0, 0));
-    element[1] = getStructuringElement(MORPH_ELLIPSE, Size(8, 8), Point(0, 0));
+    element[1] = getStructuringElement(MORPH_ELLIPSE, Size(5, 5), Point(0, 0));
     element[2] = getStructuringElement(MORPH_ELLIPSE, Size(3, 3), Point(0, 0));
     element[3] = getStructuringElement(MORPH_ELLIPSE, Size(3, 3), Point(0, 0));
     stable_count = 0;
@@ -524,6 +524,35 @@ int auxCamRecord_producer::hittingDetection(const cv::Mat &prv_frame, const cv::
     //    emit sendtoUI(dst);
 }
 
+void auxCamRecord_producer::tuggingDetection(const cv::Mat &current_frame)
+{
+    Mat diff_hsv, mask_out;
+    Mat channel[3];
+    cv::Mat ringSeg = current_frame.clone();
+    //ringSeg = ringSeg(rect(boundingRectangle));
+
+    cv::medianBlur(ringSeg, ringSeg, 3);
+    cvtColor(ringSeg, diff_hsv, CV_BGR2HSV);
+    split(diff_hsv, channel);
+    cv::threshold(channel[0], mask_out, thresh_ring, 255, THRESH_TOZERO_INV); //b1((b1 >= T))= 0;
+    cv::threshold(mask_out, mask_out, 1, 255, THRESH_BINARY); //b1((b1 > 0))= 255;
+    erode(mask_out, mask_out, element[2]);
+    dilate(mask_out, mask_out, element[0]);
+    erode(mask_out, mask_out, element[2]);
+    dilate(mask_out, mask_out, element[1]);
+    findContours(mask_out, contours_tug, hierarchy_tug, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+    tuggingData.push_back(contours_tug);
+//    qDebug() << "Contours ..";
+//    for(int i = 0; i < contours_tug.size(); ++i)
+//    {
+//        qDebug() << contours_tug[i].size() << " ; ";
+//    }
+//    qDebug() << "\n";
+//    if(sendFrame)
+//        emit sendtoUI(ringSeg);
+//    usleep(20);
+}
+
 void auxCamRecord_producer::processFrame(const cv::Mat &prv_frame, const cv::Mat &current_frame)
 {
     stat.clear();
@@ -532,10 +561,11 @@ void auxCamRecord_producer::processFrame(const cv::Mat &prv_frame, const cv::Mat
     {
         int hittingOut = hittingDetection(prv_frame, current_frame);
         Rect trackOut = blobTrack(current_frame);
+        tuggingDetection(current_frame);
         string dt = currentDateTime();
         if(trackOut.width != -1)
         {
-            trackingData.push_back(make_pair(dt, make_pair(trackOut.x + ((double)trackOut.width/2.0), trackOut.y + ((double)trackOut.height/2.0))));
+            trackingData.push_back(make_pair(dt, make_pair((trackOut.x + ((double)trackOut.width/2.0)), (trackOut.y + ((double)trackOut.height/2.0)) )));
             stat = "Tracking active: Status -> " + QString::fromStdString(status) + " ";
         }
         else
@@ -562,10 +592,6 @@ void auxCamRecord_producer::processFrame(const cv::Mat &prv_frame, const cv::Mat
             QString v = "St:M," + QString::number(old_index) + "," + QString::number(current_index);
             stateInfo.push_back(make_pair(make_pair(dt, ++countFrame), v.toStdString()));
         }
-
-        if(sendFrame)
-            emit sendtoUI(current_frame);
-
         sendTrackingStatus(stat);
     }
 }
@@ -629,12 +655,17 @@ void auxCamRecord_producer::process()
                             color[(dd * eff_rgb_width)+ (p + 2)] = r;
                         }
                     }
+                    if(sendFrame)
+                        emit sendtoUI(img3u);
+                    usleep(20);
+                    trackingTimer.start();
                     processFrame(img3u_prv, img3u);
+                    int nMilliseconds = trackingTimer.elapsed();
+                    qDebug() << "Elapsed time per frame ->" << nMilliseconds << endl;
+
                     img3u.copyTo(img3u_prv);
                     vec_frame_ax_rgb[i] = img3u;
-                    usleep(10);
-                    //if(sendFrame)
-                    //    emit sendtoUI(img3u);
+
                 }
                 else
                 {

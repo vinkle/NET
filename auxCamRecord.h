@@ -59,6 +59,7 @@ public:
     void grab();
     void processFrame(const cv::Mat &prv_frame, const cv::Mat &current_frame);
     int hittingDetection(const cv::Mat &prv_frame, const cv::Mat &current_frame);
+    void tuggingDetection(const cv::Mat &current_frame);
     const string currentDateTime();
     Rect blobTrack(const cv::Mat &current_frame);
     void medianFlowTrack(const cv::Mat &);
@@ -67,6 +68,7 @@ public:
     bool sendFrame;
     vector<pair<string, pair<double, double> > > trackingData;
     vector<pair<string, int > > hittingData_fdiff;
+    vector<vector<vector<Point> > > tuggingData;
     vector<pair<pair<string, int>, string> >  stateInfo; //timestamp, count, state
     // dtor
     ~auxCamRecord_producer();
@@ -147,7 +149,9 @@ private:
     int thresh;
     Mat kernel;
     vector<vector<Point> > contours;
+    vector<vector<Point> > contours_tug;
     vector<Vec4i> hierarchy;
+    vector<Vec4i> hierarchy_tug;
     int smallImage_width, smallImage_height;
     cv::Size smallSize;
     QString stat;
