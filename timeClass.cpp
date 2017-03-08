@@ -441,8 +441,166 @@ bool timeClass::getRange(const vector<pair<string, string> > &Hitting,
     return true;
 }
 
+bool timeClass::getRange(vector< pair<string, vector<vector<Point> > > > &tugging,
+              const string &t1,
+              const string &t2,
+              pair<int, int > &indices)
+{
+    indices.first = -1;
+    indices.second = -1;
+    if(equalTo(t1, t2))
+        return false;
+    else if(greaterThan(t1, t2))
+        return false;
+
+    bool lowerBound = false;
+    bool upperBound = false;
+    for(uint i = 0; i < tugging.size(); ++i)
+    {
+        string time =  tugging[i].first;
+        if((greaterThan(time, t1) || equalTo(time, t1)) && !lowerBound)
+        {
+            lowerBound = true;
+            indices.first = i;
+        }
+        if((greaterThan(time, t2) || equalTo(time, t2)) && !upperBound)
+        {
+            upperBound = true;
+            indices.second = i-1;
+        }
+    }
+    if(!lowerBound)
+    {
+        return false;
+    }
+    if(!upperBound)
+    {
+        indices.second = tugging.size()-1;
+    }
+    return true;
+}
+
+
+bool timeClass::getRange(const vector<pair<string, int> > &Hitting,
+              const string &t1,
+              const string &t2,
+              pair<int, int > &indices)
+{
+    indices.first = -1;
+    indices.second = -1;
+    if(equalTo(t1, t2))
+        return false;
+    else if(greaterThan(t1, t2))
+        return false;
+
+    bool lowerBound = false;
+    bool upperBound = false;
+    for(uint i = 0; i < Hitting.size(); ++i)
+    {
+        string time =  Hitting[i].first;
+        if((greaterThan(time, t1) || equalTo(time, t1)) && !lowerBound)
+        {
+            lowerBound = true;
+            indices.first = i;
+        }
+        if((greaterThan(time, t2) || equalTo(time, t2)) && !upperBound)
+        {
+            upperBound = true;
+            indices.second = i-1;
+        }
+    }
+    if(!lowerBound)
+    {
+        return false;
+    }
+    if(!upperBound)
+    {
+        indices.second = Hitting.size()-1;
+    }
+    return true;
+}
+
+
 
 bool timeClass::getRange(const vector<pair<string, string> > &Hitting,
+              const timeClass &t1,
+              const timeClass &t2,
+              pair<int, int > &indices)
+{
+    indices.first = -1;
+    indices.second = -1;
+    if(equalTo(t1, t2))
+        return false;
+    else if(greaterThan(t1, t2))
+        return false;
+
+    bool lowerBound = false;
+    bool upperBound = false;
+    for(uint i = 0; i < Hitting.size(); ++i)
+    {
+        timeClass time(Hitting[i].first);
+        if((greaterThan(time, t1) || equalTo(time, t1)) && !lowerBound)
+        {
+            lowerBound = true;
+            indices.first = i;
+        }
+        if((greaterThan(time, t2) || equalTo(time, t2)) && !upperBound)
+        {
+            upperBound = true;
+            indices.second = i-1;
+        }
+    }
+    if(!lowerBound)
+    {
+        return false;
+    }
+    if(!upperBound)
+    {
+        indices.second = Hitting.size()-1;
+    }
+    return true;
+}
+
+bool timeClass::getRange(vector< pair<string, vector<vector<Point> > > > &tugging,
+              const timeClass &t1,
+              const timeClass &t2,
+              pair<int, int > &indices)
+{
+    indices.first = -1;
+    indices.second = -1;
+    if(equalTo(t1, t2))
+        return false;
+    else if(greaterThan(t1, t2))
+        return false;
+
+    bool lowerBound = false;
+    bool upperBound = false;
+    for(uint i = 0; i < tugging.size(); ++i)
+    {
+        timeClass time(tugging[i].first);
+        if((greaterThan(time, t1) || equalTo(time, t1)) && !lowerBound)
+        {
+            lowerBound = true;
+            indices.first = i;
+        }
+        if((greaterThan(time, t2) || equalTo(time, t2)) && !upperBound)
+        {
+            upperBound = true;
+            indices.second = i-1;
+        }
+    }
+    if(!lowerBound)
+    {
+        return false;
+    }
+    if(!upperBound)
+    {
+        indices.second = tugging.size()-1;
+    }
+    return true;
+}
+
+bool timeClass::getRange(const vector<pair<string, int> > &Hitting,
               const timeClass &t1,
               const timeClass &t2,
               pair<int, int > &indices)

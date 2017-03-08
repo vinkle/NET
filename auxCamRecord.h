@@ -34,7 +34,8 @@ using namespace cv;
 typedef cv::Mat myMat;
 typedef Pylon::CBaslerGigEInstantCamera Camera_t;
 #define TRACKING_BLOB_THRESH 10
-#define THRESH_RING_SEGMENT_ON 50000
+//#define THRESH_RING_SEGMENT_ON 50000
+#define THRESH_RING_SEGMENT_ON 20000 // change to above
 #define THRESH_RING_SEGMENT_OFF 1000
 #define THRESH_PICKING_TO_PICKING 200000
 #define THRESH_PICKING_TO_MOVING 5000
@@ -59,7 +60,7 @@ public:
     void grab();
     void processFrame(const cv::Mat &prv_frame, const cv::Mat &current_frame);
     int hittingDetection(const cv::Mat &prv_frame, const cv::Mat &current_frame);
-    void tuggingDetection(const cv::Mat &current_frame);
+    void tuggingDetection(const cv::Mat &current_frame, vector<vector<Point> > &);
     const string currentDateTime();
     Rect blobTrack(const cv::Mat &current_frame);
     void medianFlowTrack(const cv::Mat &);
@@ -68,9 +69,9 @@ public:
     bool sendFrame;
     vector<pair<string, pair<double, double> > > trackingData;
     vector<pair<string, int > > hittingData_fdiff;
-    vector<vector<vector<Point> > > tuggingData;
+    vector< pair<string, vector<vector<Point> > > >tuggingData;
     vector<pair<pair<string, int>, string> >  stateInfo; //timestamp, count, state
-    // dtor
+    //dtor
     ~auxCamRecord_producer();
 
 signals:
@@ -149,12 +150,13 @@ private:
     int thresh;
     Mat kernel;
     vector<vector<Point> > contours;
-    vector<vector<Point> > contours_tug;
     vector<Vec4i> hierarchy;
-    vector<Vec4i> hierarchy_tug;
+    vector<vector<Point> > contours_tug;
     int smallImage_width, smallImage_height;
     cv::Size smallSize;
     QString stat;
+    std::vector<int> nextLEDindexVector;
+    int ledIndexCount;
 
 };
 

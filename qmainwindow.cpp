@@ -51,7 +51,7 @@ qMainWindow::qMainWindow(/*settings_main &obj, */const params &par, string type,
         connect(serial, SIGNAL(readyRead()), this, SLOT(readData()));
         connect(serial, SIGNAL(readChannelFinished()), this, SLOT(readData()));
         start_serial_logging = false;
-
+        stopProcessing = false;
 
         ui->setupUi(this);
         // set up the camera and start streaming on the central widget
@@ -197,7 +197,6 @@ qMainWindow::qMainWindow(/*settings_main &obj, */const params &par, string type,
         }
         m_showResult = new showResult;
         modelResult = new QStandardItemModel;
-        tempVar = false;
 }
 
 void qMainWindow::updateStatus(const QString & trackingMsg)
@@ -218,9 +217,10 @@ void qMainWindow::updateStatus(const QString & trackingMsg)
                             .arg(ms, 3, 10, QChar('0'));
     msg += "       Time Remaining -> " + diff;
     ui->statusBar->showMessage(msg);
-    if(timeRemain <= 0)
+    if(timeRemain <= 0 && !stopProcessing)
     {
         sendtoDB = true;
+        stopProcessing = true;
         ui->statusBar->showMessage("Time finished. Wait for the processing of the result");
         on_actionStop_2_triggered();
     }
@@ -291,54 +291,59 @@ void qMainWindow::saveData()
     ResultString = result.write(Activity_Data);
     Activity_Data.close();
 
-    if(sendtoDB)
-    {
-        if(!endoDB.open())
-        {
-            if(!endoDB.isOpen())
-            {
-                QMessageBox::critical(this, tr("Error"), "Database Error !!!");
-                return;
-            }
-        }
-        QSqlQuery query;
-        query.prepare("INSERT INTO recordDB (EmailID, level, EndoVid, AuxVid, Result, ActivityInfo, ResultInfo, TimeStamp, Type, Details, Score)"
-                      "VALUES (:EmailID, :level, :EndoVid, :AuxVid, :Result, :ActivityInfo, :ResultInfo, :TimeStamp, :Type, :Details, :Score)");
-        query.bindValue(":EmailID", emailID);
-        query.bindValue(":level", level);
-        query.bindValue(":EndoVid", QString::fromStdString(endoFilename));
-        query.bindValue(":AuxVid", QString::fromStdString(auxFilename));
-        query.bindValue(":Result", true);
-        query.bindValue(":ActivityInfo", QString::fromStdString(filenameActivity));
-        query.bindValue(":ResultInfo", QString::fromStdString(ResultString));
-        query.bindValue(":TimeStamp", QString::fromStdString(timestamp));
-        query.bindValue(":Type", QString::fromStdString(type));
-        query.bindValue(":Details", QString::fromStdString(details));
-        query.bindValue(":Score", result.totalScore);
-        resultQry = query.exec();
-        if(!resultQry)
-        {
-            QMessageBox::critical(this, tr("Error"), "DB Error - see the log");
-            qDebug() << "DB error:  " << query.lastError();
-        }
-        sendtoDB = false;
-        ui->statusBar->showMessage("Activity completed and saved in the database");
-    }
-    else
-    {
-        ui->statusBar->showMessage("Activity not completed in time. Not saving in the database");
-    }
+//    if(sendtoDB)
+//    {
+//        if(!endoDB.open())
+//        {
+//            if(!endoDB.isOpen())
+//            {
+//                QMessageBox::critical(this, tr("Error"), "Database Error !!!");
+//                return;
+//            }
+//        }
+//        QSqlQuery query;
+//        query.prepare("INSERT INTO recordDB (EmailID, level, EndoVid, AuxVid, Result, ActivityInfo, ResultInfo, TimeStamp, Type, Details, Score)"
+//                      "VALUES (:EmailID, :level, :EndoVid, :AuxVid, :Result, :ActivityInfo, :ResultInfo, :TimeStamp, :Type, :Details, :Score)");
+//        query.bindValue(":EmailID", emailID);
+//        query.bindValue(":level", level);
+//        query.bindValue(":EndoVid", QString::fromStdString(endoFilename));
+//        query.bindValue(":AuxVid", QString::fromStdString(auxFilename));
+//        query.bindValue(":Result", true);
+//        query.bindValue(":ActivityInfo", QString::fromStdString(filenameActivity));
+//        query.bindValue(":ResultInfo", QString::fromStdString(ResultString));
+//        query.bindValue(":TimeStamp", QString::fromStdString(timestamp));
+//        query.bindValue(":Type", QString::fromStdString(type));
+//        query.bindValue(":Details", QString::fromStdString(details));
+//        query.bindValue(":Score", result.totalScore);
+//        resultQry = query.exec();
+//        if(!resultQry)
+//        {
+//            QMessageBox::critical(this, tr("Error"), "DB Error - see the log");
+//            qDebug() << "DB error:  " << query.lastError();
+//        }
+//        sendtoDB = false;
+//        ui->statusBar->showMessage("Activity completed and saved in the database");
+//    }
+//    else
+//    {
+//        ui->statusBar->showMessage("Activity not completed in time. Not saving in the database");
+//    }
+
 }
 
 void qMainWindow::processData()
 {
     vector<pair<string, string> > Hitting;
+    vector<pair<string, int> > Hitting_fdiff;
+    vector< pair<string, vector<vector<Point> > > >tuggingData;
     vector<pair<pair<string, int>, string> > State;
     vector<pair<string, pair<double, double> > > trackingDataWithTime;
 
     Hitting = hittingInfo;
     State = mProducer_aux->stateInfo;
     trackingDataWithTime = mProducer_aux->trackingData;
+    Hitting_fdiff = mProducer_aux->hittingData_fdiff;
+    tuggingData = mProducer_aux->tuggingData;
 
     string status;
     uint size = State.size();
@@ -484,11 +489,17 @@ void qMainWindow::processData()
             starttime = activities[p].s.startTime;
             endtime  = activities[p].s.endTime;
             pair<int, int> rangeHitting;
-
             bool resHitting = temp.getRange(Hitting, starttime, endtime, rangeHitting);
-            //cout << "resHitting " << resHitting;
+
             pair<int, int> rangeTracking;
             bool resTracking = temp.getRange(trackingDataWithTime, starttime, endtime, rangeTracking);
+
+            pair<int, int> rangeHittingFDiff;
+            bool resHittingFDiff = temp.getRange(Hitting_fdiff, starttime, endtime, rangeHittingFDiff);
+
+            pair<int, int> rangeTugging;
+            bool resTugging = temp.getRange(tuggingData, starttime, endtime, rangeTugging);
+
             if(resHitting)
             {
                 for(int i =  rangeHitting.first; i <= rangeHitting.second; i++)
@@ -502,6 +513,7 @@ void qMainWindow::processData()
                     activities[p].s.hitting.push_back(make_pair(date, n));
                 }
             }
+
             if(resTracking)
             {
                 for(int i =  rangeTracking.first; i < rangeTracking.second; i++)
@@ -511,6 +523,26 @@ void qMainWindow::processData()
                     activities[p].s.trackingData.push_back(make_pair(date, vals));
                 }
             }
+
+            if(resHittingFDiff)
+            {
+                for(int i =  rangeHittingFDiff.first; i <= rangeHittingFDiff.second; i++)
+                {
+                    string date = Hitting_fdiff[i].first;
+                    int val = Hitting_fdiff[i].second;
+                    activities[p].s.hittingData_fdiff.push_back(make_pair(date, val));
+                }
+            }
+            if(resTugging)
+            {
+                for(int i =  rangeTugging.first; i <= rangeTugging.second; i++)
+                {
+                    string date = tuggingData[i].first;
+                    vector<vector<Point> > val = tuggingData[i].second;
+                    activities[p].s.tuggingData.push_back(make_pair(date, val));
+                }
+            }
+
         }
         else if (activities[p].type == "picking")
         {
@@ -518,11 +550,17 @@ void qMainWindow::processData()
             starttime = activities[p].p.startTime;
             endtime  = activities[p].p.endTime;
             pair<int, int> rangeHitting;
-
             bool resHitting = temp.getRange(Hitting, starttime, endtime, rangeHitting);
-            //cout << "resHitting " << resHitting;
+
             pair<int, int> rangeTracking;
             bool resTracking = temp.getRange(trackingDataWithTime, starttime, endtime, rangeTracking);
+
+            pair<int, int> rangeHittingFDiff;
+            bool resHittingFDiff = temp.getRange(Hitting_fdiff, starttime, endtime, rangeHittingFDiff);
+
+            pair<int, int> rangeTugging;
+            bool resTugging = temp.getRange(tuggingData, starttime, endtime, rangeTugging);
+
             if(resHitting)
             {
                 for(int i =  rangeHitting.first; i <= rangeHitting.second; i++)
@@ -545,18 +583,43 @@ void qMainWindow::processData()
                     activities[p].p.trackingData.push_back(make_pair(date, vals));
                 }
             }
+            if(resHittingFDiff)
+            {
+                for(int i =  rangeHittingFDiff.first; i <= rangeHittingFDiff.second; i++)
+                {
+                    string date = Hitting_fdiff[i].first;
+                    int val = Hitting_fdiff[i].second;
+                    activities[p].p.hittingData_fdiff.push_back(make_pair(date, val));
+                }
+            }
+            if(resTugging)
+            {
+                for(int i =  rangeTugging.first; i <= rangeTugging.second; i++)
+                {
+                    string date = tuggingData[i].first;
+                    vector<vector<Point> > val = tuggingData[i].second;
+                    activities[p].p.tuggingData.push_back(make_pair(date, val));
+                }
+            }
         }
         else if (activities[p].type == "moving")
         {
             qDebug() << "moving\n";
             starttime = activities[p].m.startTime;
             endtime  = activities[p].m.endTime;
-            pair<int, int> rangeHitting;
 
+            pair<int, int> rangeHitting;
             bool resHitting = temp.getRange(Hitting, starttime, endtime, rangeHitting);
-            //cout << "resHitting " << resHitting;
+
             pair<int, int> rangeTracking;
             bool resTracking = temp.getRange(trackingDataWithTime, starttime, endtime, rangeTracking);
+
+            pair<int, int> rangeHittingFDiff;
+            bool resHittingFDiff = temp.getRange(Hitting_fdiff, starttime, endtime, rangeHittingFDiff);
+
+            pair<int, int> rangeTugging;
+            bool resTugging = temp.getRange(tuggingData, starttime, endtime, rangeTugging);
+
             if(resHitting)
             {
                 for(int i =  rangeHitting.first; i <= rangeHitting.second; i++)
@@ -579,12 +642,37 @@ void qMainWindow::processData()
                     activities[p].m.trackingData.push_back(make_pair(date, vals));
                 }
             }
+
+            if(resHittingFDiff)
+            {
+                for(int i =  rangeHittingFDiff.first; i <= rangeHittingFDiff.second; i++)
+                {
+                    string date = Hitting_fdiff[i].first;
+                    int val = Hitting_fdiff[i].second;
+                    activities[p].m.hittingData_fdiff.push_back(make_pair(date, val));
+                }
+            }
+            if(resTugging)
+            {
+                for(int i =  rangeTugging.first; i <= rangeTugging.second; i++)
+                {
+                    string date = tuggingData[i].first;
+                    vector<vector<Point> > val = tuggingData[i].second;
+                    activities[p].m.tuggingData.push_back(make_pair(date, val));
+                }
+            }
         }
     }
    qDebug() << "out activity processing\n";
+//   qDebug() << "Printing the Result \n";
+//   for(uint p = 0; p < activities.size(); ++p)
+//   {
+//       activities[p].print();
+//   }
+
+
    if(activities.size())
    {
-
        // start processing the activity data and put into result data
        for(uint p = 0; p < activities.size(); ++p)
        {
@@ -974,10 +1062,6 @@ void qMainWindow::readData()
 
 void qMainWindow::updateScreen(const myMat &image)
 {
-    if(tempVar)
-    {
-        cv::imwrite("temp.png", image);
-    }
     if( mFlipVert && mFlipHoriz )
         cv::flip( image,image, -1);
     else if( mFlipVert )
@@ -1132,12 +1216,10 @@ const string qMainWindow::currentDateTime()
 void qMainWindow::on_actionTemp_triggered()
 {
     //writeData("j\n");
-    tempVar = true;
 }
 
 void qMainWindow::on_actionTemp2_triggered()
 {
-     tempVar = true;
     //qDebug() << "Aux producer running? -> " << mThread_aux_producer->isRunning();
     //qDebug() << "Aux producer finished? -> " << mThread_aux_producer->isFinished();
 

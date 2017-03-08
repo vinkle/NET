@@ -66,6 +66,7 @@ private slots:
     void on_action_Horizontal_Flip_triggered(bool checked);
 
     void updateScreen(const myMat &);
+
     void updateStatus(const QString & trackingMsg);
 
     void on_actionQuit_triggered();
@@ -160,7 +161,7 @@ private:
     QTime startTime;
     int TotalTimeinMs;
     bool sendtoDB;
-    bool tempVar;
+    bool stopProcessing;
 protected:
     //void timerEvent(QTimerEvent *event);
 };

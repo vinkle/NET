@@ -13,10 +13,11 @@ settings::settings(QWidget *parent) :
     serial = new QSerialPort(this);
     ui->baudRateBox->setInsertPolicy(QComboBox::NoInsert);
 
-    ui->baudRateBox->addItem(QStringLiteral("115200"), QSerialPort::Baud115200);
-    ui->baudRateBox->addItem(QStringLiteral("38400"), QSerialPort::Baud38400);
-    ui->baudRateBox->addItem(QStringLiteral("19200"), QSerialPort::Baud19200);
     ui->baudRateBox->addItem(QStringLiteral("9600"), QSerialPort::Baud9600);
+    ui->baudRateBox->addItem(QStringLiteral("19200"), QSerialPort::Baud19200);
+    ui->baudRateBox->addItem(QStringLiteral("38400"), QSerialPort::Baud38400);
+    ui->baudRateBox->addItem(QStringLiteral("115200"), QSerialPort::Baud115200);
+
 
     ui->dataBitsBox->addItem(QStringLiteral("8"), QSerialPort::Data8);
     ui->dataBitsBox->addItem(QStringLiteral("7"), QSerialPort::Data7);

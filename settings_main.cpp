@@ -69,6 +69,8 @@ settings_main::settings_main(QWidget *parent) :
         QMessageBox::critical(this, tr("Error"), "Database connection failure. Exiting the application...");
         exit(0);
     }
+    mSettings->setDB(endoDB);
+
     ui->txtDetails->setText(QDate::currentDate().toString());
     //serial port stuff
     serial = new QSerialPort(this);
@@ -306,7 +308,7 @@ void settings_main::mouseClickOnAuxCam(string &clk, vector<int> &d)
     {
         scene_aux->clear();
         scene_aux->addPixmap(QPixmap::fromImage(AuxImg));
-        temp_rect = QRect(d[0]-10, d[1]-10, 20, 15);
+        temp_rect = QRect(d[0]-15, d[1]-10, 25, 15);
         temp_rectBig = QRect(d[0]-20, d[1]-35, 35, 35);
         scene_aux->addRect(temp_rect,QPen(QColor(0, 0,255)));
         scene_aux->addRect(temp_rectBig,QPen(QColor(0, 255,0)));

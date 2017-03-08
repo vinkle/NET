@@ -1,0 +1,5 @@
+basler width ->1280basler height ->1024Fail to open camera IDS UI-5240CP-C-HQ - Check if it is connected
+Destructor Triggered 
+cleanup triggered 
+cleaning basler camera 
+cleaning endo camera

@@ -4,7 +4,7 @@ auxCamRecord_producer::auxCamRecord_producer()
 {
     sendFrame = false;
     old_index = -1;
-    current_index =  (rand() % (int)(No_pegs)) + 1;
+    current_index =  4;//(rand() % (int)(No_pegs)) + 1;
     //current_index = 7;
     element[0] = getStructuringElement(MORPH_ELLIPSE, Size(3, 3), Point(0, 0));
     element[1] = getStructuringElement(MORPH_ELLIPSE, Size(5, 5), Point(0, 0));
@@ -21,7 +21,34 @@ auxCamRecord_producer::auxCamRecord_producer()
     prevBB = new Rect(0,0,0,0);
     medianFlowTracker = new MedianFlowTracker();
     thresh = 50;
+    ledIndexCount = 0;
     kernel = (Mat_<uchar>(3, 3) << 0, 1, 0, 1, 1, 1, 0, 1, 0);
+    nextLEDindexVector.resize(25);
+    nextLEDindexVector[0] = 1;
+    nextLEDindexVector[1] = 2;
+    nextLEDindexVector[2] = 6;
+    nextLEDindexVector[3] = 8;
+    nextLEDindexVector[4] = 12;
+    nextLEDindexVector[5] = 11;
+    nextLEDindexVector[6] = 3;
+    nextLEDindexVector[7] = 9;
+    nextLEDindexVector[8] = 4;
+    nextLEDindexVector[9] = 11;
+    nextLEDindexVector[10] = 1;
+    nextLEDindexVector[11] = 9;
+    nextLEDindexVector[12] = 12;
+    nextLEDindexVector[13] = 4;
+    nextLEDindexVector[14] = 1;
+    nextLEDindexVector[15] = 12;
+    nextLEDindexVector[16] = 9;
+    nextLEDindexVector[17] = 4;
+    nextLEDindexVector[18] = 12;
+    nextLEDindexVector[19] = 11;
+    nextLEDindexVector[20] = 3;
+    nextLEDindexVector[21] = 6;
+    nextLEDindexVector[22] = 11;
+    nextLEDindexVector[23] = 8;
+    nextLEDindexVector[24] = 4;
 }
 auxCamRecord_producer::~auxCamRecord_producer()
 {
@@ -371,6 +398,7 @@ string auxCamRecord_producer::getState(const cv::Mat &current_frame)
     dilate(mask_out, mask_out, element[0]);
     erode(mask_out, mask_out, element[2]);
     dilate(mask_out, mask_out, element[0]);
+    dilate(mask_out, mask_out, element[0]);
     if(indexSet)
     {
         indexSet = false;
@@ -395,14 +423,16 @@ string auxCamRecord_producer::getState(const cv::Mat &current_frame)
         else
         {
             status = "stationary";
-            if(old_index == current_index)
-            {
-                do
-                {
-                    current_index =  (rand() % (int)(No_pegs)) + 1;
-                }while(old_index == current_index);
-            }
+//            if(old_index == current_index)
+//            {
+//                do
+//                {
+//                    current_index =  nextLEDindexVector[ledIndexCount++];
+//                }while(old_index == current_index);
+//            }
         }
+        changeLEDIndex(current_index);
+        usleep(10000);
         changeLEDIndex(current_index);
     }
     qDebug() << "old_index " << old_index << " current_index " << current_index << " status " << QString::fromStdString(status) << endl;
@@ -412,6 +442,12 @@ string auxCamRecord_producer::getState(const cv::Mat &current_frame)
         double sum_oldIndex_big = cv::sum(mask_out(rect(pegRectBoxBig[old_index-1])))[0];
         double sum_currentIndex_small = cv::sum(mask_out(rect(pegRectBoxSmall[current_index -1])))[0];
         //double sum_currentIndex_big = mask_out(rect(pegRectBoxBig[current_index-1]));
+        qDebug() << "old_index_sum_small " << sum_oldIndex_small << "old_index_sum_big" << sum_oldIndex_big << "sum_currentindex_small" << sum_currentIndex_small << endl;
+        Mat temp = mask_out(rect(pegRectBoxBig[current_index-1]));
+        if(sendFrame)
+            emit sendtoUI(temp);
+        usleep(20);
+
         if(status == "stationary")
         {
             if(sum_oldIndex_small > THRESH_RING_SEGMENT_ON)
@@ -445,13 +481,11 @@ string auxCamRecord_producer::getState(const cv::Mat &current_frame)
                 stable_count = 0;
                 status = "stationary";
                 old_index = current_index;
-                current_index =  (rand() % (int)(No_pegs)) + 1;
-                if(old_index == current_index)
+                //current_index =  (rand() % (int)(No_pegs)) + 1;
+                current_index =  nextLEDindexVector[ledIndexCount++];
+                if(ledIndexCount == 24)
                 {
-                    do
-                    {
-                        current_index =  (rand() % (int)(No_pegs)) + 1;
-                    }while(old_index == current_index);
+                    ledIndexCount = 0;
                 }
                 changeLEDIndex(current_index);
             }
@@ -473,13 +507,11 @@ string auxCamRecord_producer::getState(const cv::Mat &current_frame)
             stable_count = 0;
             status = "stationary";
             old_index = current_index;
-            current_index =  (rand() % (int)(No_pegs)) + 1;
-            if(old_index == current_index)
+            //current_index =  (rand() % (int)(No_pegs)) + 1;
+            current_index =  nextLEDindexVector[ledIndexCount++];
+            if(ledIndexCount == 24)
             {
-                do
-                {
-                    current_index =  (rand() % (int)(No_pegs)) + 1;
-                }while(old_index == current_index);
+                ledIndexCount = 0;
             }
             changeLEDIndex(current_index);
         }
@@ -505,6 +537,10 @@ int auxCamRecord_producer::hittingDetection(const cv::Mat &prv_frame, const cv::
     cv::dilate(dst, dst, kernel);
     cv::normalize(dst, dst, 0, 255, cv::NORM_MINMAX);
 
+//    if(sendFrame)
+//        emit sendtoUI(dst);
+//    usleep(20);
+    hittingData.clear();
     for (int y = 0; y < dst.rows - smallSize.height + 1; y += smallSize.height)
     {
         for (int x = 0; x < dst.cols - smallSize.width + 1; x += smallSize.width)
@@ -518,13 +554,16 @@ int auxCamRecord_producer::hittingDetection(const cv::Mat &prv_frame, const cv::
             }
         }
     }
+//   qDebug() << "Hitting Intensity -> " << hittingData.size() << endl;;
+//   qDebug() << "hittingData size -> " << hittingData.size() << endl;;
+//    if(sendFrame)
+//        emit sendtoUI(dst);
+//    usleep(20);
+
     return hittingData.size();
-    //qDebug() << "hittingData size -> " << hittingData.size() << endl;;
-    //if(sendFrame)
-    //    emit sendtoUI(dst);
 }
 
-void auxCamRecord_producer::tuggingDetection(const cv::Mat &current_frame)
+void auxCamRecord_producer::tuggingDetection(const cv::Mat &current_frame, vector<vector<Point> > &contours_tug)
 {
     Mat diff_hsv, mask_out;
     Mat channel[3];
@@ -540,8 +579,7 @@ void auxCamRecord_producer::tuggingDetection(const cv::Mat &current_frame)
     dilate(mask_out, mask_out, element[0]);
     erode(mask_out, mask_out, element[2]);
     dilate(mask_out, mask_out, element[1]);
-    findContours(mask_out, contours_tug, hierarchy_tug, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
-    tuggingData.push_back(contours_tug);
+    findContours(mask_out, contours_tug, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 //    qDebug() << "Contours ..";
 //    for(int i = 0; i < contours_tug.size(); ++i)
 //    {
@@ -559,13 +597,31 @@ void auxCamRecord_producer::processFrame(const cv::Mat &prv_frame, const cv::Mat
     getState(current_frame);
     if(m_eval)
     {
+        // invoke hitting subroutine
         int hittingOut = hittingDetection(prv_frame, current_frame);
+
+        // invoke tracking subroutine
         Rect trackOut = blobTrack(current_frame);
-        tuggingDetection(current_frame);
+
+        // invoke tugging routine
+        contours_tug.clear();
+        tuggingDetection(current_frame, contours_tug);
+
+//        Mat aa = current_frame.clone();
+//        for(int i = 0; i < pegRectBoxSmall.size(); i++)
+//        {
+//            cv::rectangle(aa, rect(pegRectBoxSmall[i]),Scalar(0,255,0),1);
+//        }
+//        if(sendFrame)
+//            emit sendtoUI(aa);
+//        usleep(20);
+
+        // get the current datetime
         string dt = currentDateTime();
+        // save tracking
         if(trackOut.width != -1)
         {
-            trackingData.push_back(make_pair(dt, make_pair((trackOut.x + ((double)trackOut.width/2.0)), (trackOut.y + ((double)trackOut.height/2.0)) )));
+            trackingData.push_back(make_pair(dt, make_pair(((trackOut.x + ((double)trackOut.width/2.0)) / (cols/2.0)), ((trackOut.y + ((double)trackOut.height/2.0)) / (rows/2.0)) )));
             stat = "Tracking active: Status -> " + QString::fromStdString(status) + " ";
         }
         else
@@ -573,11 +629,16 @@ void auxCamRecord_producer::processFrame(const cv::Mat &prv_frame, const cv::Mat
             trackingData.push_back(make_pair(dt, make_pair(-1, -1)));
             stat = "Tracking LOST : Status -> " + QString::fromStdString(status) + " ";
         }
+
+        // save hitting
         if(hittingOut > HITTING_THRESHOLD)
         {
             hittingData_fdiff.push_back(make_pair(dt, hittingOut));
             stat += "Hitting Detected ";
         }
+        // save tugging
+        tuggingData.push_back(make_pair(dt, contours_tug));
+        // save current status
         if(status == "stationary")
         {
             stateInfo.push_back(make_pair(make_pair(dt, ++countFrame), "St:S"));
@@ -655,13 +716,13 @@ void auxCamRecord_producer::process()
                             color[(dd * eff_rgb_width)+ (p + 2)] = r;
                         }
                     }
-                    if(sendFrame)
-                        emit sendtoUI(img3u);
-                    usleep(20);
-                    trackingTimer.start();
+//                    if(sendFrame)
+//                        emit sendtoUI(img3u);
+//                    usleep(20);
+//                    trackingTimer.start();
                     processFrame(img3u_prv, img3u);
-                    int nMilliseconds = trackingTimer.elapsed();
-                    qDebug() << "Elapsed time per frame ->" << nMilliseconds << endl;
+//                    int nMilliseconds = trackingTimer.elapsed();
+//                    qDebug() << "Elapsed time per frame ->" << nMilliseconds << endl;
 
                     img3u.copyTo(img3u_prv);
                     vec_frame_ax_rgb[i] = img3u;
@@ -827,7 +888,7 @@ void auxCamRecord_consumer::process()
                     {
                         cout << "started dumping aux\n";
                         cout << "capture path aux-> " << videoFullpath << endl;
-                        videoWriter.open(videoFullpath.c_str(), CV_FOURCC('F','M','P','4'), 25, Size(cols, rows), true);
+                        videoWriter.open(videoFullpath.c_str(), CV_FOURCC('F','M','P','4'), 25, Size(cols/2, rows/2), true);
                         startdumping = true;
                     }
                     videoWriter.write(vec_frame_consume[i]);

@@ -39,7 +39,7 @@ public:
         // serial port settings
         serial_name =  "ttyUSB0";
         serial_baudRate =  static_cast<QSerialPort::BaudRate>(9600);
-        serial_stringBaudRate = "115200";
+        serial_stringBaudRate = "9600";
         serial_dataBits = static_cast<QSerialPort::DataBits>(8);
         serial_stringDataBits = "8";
         serial_parity = static_cast<QSerialPort::Parity>(0);

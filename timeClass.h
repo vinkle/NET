@@ -9,8 +9,11 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <cstdlib>
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/core.hpp>
 //12-12-12
 using namespace std;
+using namespace cv;
 
 class timeClass
 {
@@ -29,6 +32,26 @@ public:
                   const string &time1,
                   const string &time2,
                   pair<int, int > &indices);
+
+    bool getRange(const vector<pair<string, int> > &Hitting,
+                  const timeClass &t1,
+                  const timeClass &t2,
+                  pair<int, int > &indices);
+
+    bool getRange(const vector<pair<string, int> > &Hitting,
+                  const string &time1,
+                  const string &time2,
+                  pair<int, int > &indices);
+
+    bool getRange(vector< pair<string, vector<vector<Point> > > > &tugging,
+                  const timeClass &t1,
+                  const timeClass &t2,
+                  pair<int, int > &indices);
+    bool getRange(vector< pair<string, vector<vector<Point> > > > &tugging,
+                  const string &time1,
+                  const string &time2,
+                  pair<int, int > &indices);
+
 
     bool getRange(const vector<string> &timeData,
                   const timeClass &t1,

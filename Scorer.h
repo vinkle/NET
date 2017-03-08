@@ -6,7 +6,11 @@
 #include <iostream>
 #include <fstream>
 #include <iterator>
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/core.hpp>
 using namespace std;
+using namespace cv;
+
 #define HITTING_THRESHOLD_SENSOR 400
 
 //12-12-12
@@ -18,6 +22,8 @@ struct Activity
         int startIndex, endIndex;
         string startTime, endTime;  // Time of starting and ending of the activity
         vector<pair<string, int > > hitting; // Hitting values in these times
+        vector<pair<string, int > > hittingData_fdiff;
+        vector< pair<string, vector<vector<Point> > > >tuggingData;
         vector<pair<string, pair<double, double> > > trackingData; // Tracking Data in the stationary activity
         //vector<int> framesForTrackingFailure;
         //vector<int> framesForTrackingReinit;
@@ -37,6 +43,8 @@ struct Activity
             endTime = "";
 			hitting.clear();
 			trackingData.clear();
+            hittingData_fdiff.clear();
+            tuggingData.clear();
             //framesForTrackingFailure.clear();
             //framesForRingHitting.clear();
             //framesForTrackingReinit.clear();
@@ -49,6 +57,8 @@ struct Activity
 		int from_peg;
         vector<pair<string, int > > hitting;
         vector<pair<string, pair<double, double> > > trackingData;
+        vector<pair<string, int > > hittingData_fdiff;
+        vector< pair<string, vector<vector<Point> > > >tuggingData;
         //vector<int> framesForTrackingFailure;
         //vector<int> framesForRingHitting;
         //vector<int> framesForTrackingReinit;
@@ -69,6 +79,8 @@ struct Activity
             from_peg = -1;
 			hitting.clear();
 			trackingData.clear();
+            hittingData_fdiff.clear();
+            tuggingData.clear();
             //framesForTrackingFailure.clear();
             //framesForRingHitting.clear();
             //framesForTrackingReinit.clear();
@@ -81,6 +93,8 @@ struct Activity
         int from_peg, to_peg;
         vector<pair<string, int > > hitting;
         vector<pair<string, pair<double, double> > > trackingData;
+        vector<pair<string, int > > hittingData_fdiff;
+        vector< pair<string, vector<vector<Point> > > >tuggingData;
         //vector<int> framesForTrackingFailure;
         //vector<int> framesForRingHitting;
         //vector<int> framesForTrackingReinit;
@@ -103,6 +117,8 @@ struct Activity
             to_peg = -1;
 			hitting.clear();
 			trackingData.clear();
+            hittingData_fdiff.clear();
+            tuggingData.clear();
             //framesForTrackingFailure.clear();
             //framesForRingHitting.clear();
             //framesForTrackingReinit.clear();
@@ -112,7 +128,6 @@ struct Activity
 	stationary s;
 	Picking p;
 	Moving m;
-
 	Activity()
 	{
 		type = "";
@@ -126,13 +141,34 @@ struct Activity
 	}
     void print()
     {
+
         if(type == "stationary")
         {
             cout << "\nActivity -> Stationary\n" << "Start-Time -> " << s.startTime << " End-Time->" << s.endTime << endl;
-            cout << "Hitting Data\n";
+            cout << "Hitting-Data-Sensor\n";
             for(unsigned int i = 0; i <  s.hitting.size(); i++)
             {
                 cout << "time->" << s.hitting[i].first << "  vals->(" << s.hitting[i].second << ")\n";
+            }
+            cout << "Hitting-Data-FrameDiff\n";
+            for(unsigned int i = 0; i <  s.hittingData_fdiff.size(); i++)
+            {
+                cout << "time->" << s.hittingData_fdiff[i].first << "  val->(" << s.hittingData_fdiff[i].second << ")\n";
+            }
+            cout << "Tugging-Data-FrameDiff\n";
+            for(unsigned int i = 0; i <  s.tuggingData.size(); i++)
+            {
+                cout << "time->" << s.tuggingData[i].first << endl;
+                vector<vector <Point> > contourData = s.tuggingData[i].second;
+                for(unsigned int p = 0; p <  contourData.size(); p++)
+                {
+                    cout << "[";
+                    for(unsigned int k = 0; k <  contourData[p].size(); k++)
+                    {
+                        cout << "(" << contourData[p][k].x << "," << contourData[p][k].y << ")";
+                    }
+                    cout << "]\n";
+                }
             }
             cout << "Tracking Data\n";
             for(unsigned int i = 0; i <  s.trackingData.size(); i++)
@@ -144,26 +180,65 @@ struct Activity
         {
             cout << "\nActivity -> Picking\n" << "Start-Time -> " << p.startTime << " End-Time->" << p.endTime << endl;
             cout << "From-Peg -> " << p.from_peg << endl;
-            cout << "Hitting Data\n";
+            cout << "Hitting Data - Sensor\n";
             for(unsigned int i = 0; i <  p.hitting.size(); i++)
             {
                 cout << "time->" << p.hitting[i].first << "  vals->(" << p.hitting[i].second << ")\n";
+            }
+            cout << "Hitting-Data-FrameDiff\n";
+            for(unsigned int i = 0; i <  p.hittingData_fdiff.size(); i++)
+            {
+                cout << "time->" << p.hittingData_fdiff[i].first << "  val->(" << p.hittingData_fdiff[i].second << ")\n";
+            }
+            cout << "Tugging-Data-FrameDiff\n";
+            for(unsigned int i = 0; i <  p.tuggingData.size(); i++)
+            {
+                cout << "time->" << p.tuggingData[i].first << endl;
+                vector<vector <Point> > contourData = p.tuggingData[i].second;
+                for(unsigned int p = 0; p <  contourData.size(); p++)
+                {
+                    cout << "[";
+                    for(unsigned int k = 0; k <  contourData[p].size(); k++)
+                    {
+                        cout << "(" << contourData[p][k].x << "," << contourData[p][k].y << ")";
+                    }
+                    cout << "]\n";
+                }
             }
             cout << "Tracking Data\n";
             for(unsigned int i = 0; i <  p.trackingData.size(); i++)
             {
                 cout << "time->" << p.trackingData[i].first << "  vals->(" << p.trackingData[i].second.first << "," << p.trackingData[i].second.second << ")\n";
             }
-
         }
         else if(type == "moving")
         {
             cout << "\nActivity -> Moving\n" << "Start-Time -> " << m.startTime << " End-Time->" << m.endTime << endl;
             cout << "From-Peg-> " << m.from_peg <<  " To-Peg-> " << m.to_peg << endl;
-            cout << "Hitting Data\n";
+            cout << "Hitting Data-Sensor\n";
             for(unsigned int i = 0; i <  m.hitting.size(); i++)
             {
                 cout << "time->" << m.hitting[i].first << "  vals->(" << m.hitting[i].second << ")\n";
+            }
+            cout << "Hitting-Data-FrameDiff\n";
+            for(unsigned int i = 0; i <  m.hittingData_fdiff.size(); i++)
+            {
+                cout << "time->" << m.hittingData_fdiff[i].first << "  val->(" << m.hittingData_fdiff[i].second << ")\n";
+            }
+            cout << "Tugging-Data-FrameDiff\n";
+            for(unsigned int i = 0; i <  m.tuggingData.size(); i++)
+            {
+                cout << "time->" << m.tuggingData[i].first << endl;
+                vector<vector <Point> > contourData = m.tuggingData[i].second;
+                for(unsigned int p = 0; p <  contourData.size(); p++)
+                {
+                    cout << "[";
+                    for(unsigned int k = 0; k <  contourData[p].size(); k++)
+                    {
+                        cout << "(" << contourData[p][k].x << "," << contourData[p][k].y << ")";
+                    }
+                    cout << "]\n";
+                }
             }
             cout << "Tracking Data\n";
             for(unsigned int i = 0; i <  m.trackingData.size(); i++)
@@ -175,72 +250,158 @@ struct Activity
     string write(std::ofstream &Activity_Data)
     {
         string returnStr;
+        string sb = "(";
         if(type == "stationary")
         {
-            returnStr.append("\nActivity,Stationary\n" + string("Start-Time,") + s.startTime + "\nEnd-Time," + s.endTime);
-            Activity_Data << "\nActivity:Stationary\n" << "Start-Time," << s.startTime << "\nEnd-Time," << s.endTime << endl;
+            returnStr.append("Activity,Stationary\n" + string("Start-Time,") + s.startTime + "\nEnd-Time," + s.endTime);
+            Activity_Data << "Activity,Stationary\n" << "Start-Time," << s.startTime << "\nEnd-Time," << s.endTime << endl;
 
-            returnStr.append("Hitting-Data\n");
-            Activity_Data << "Hitting-Data\n";
+            returnStr.append("Hitting-Data-Sensor\n");
+            Activity_Data << "Hitting-Data-Sensor\n";
             for(unsigned int i = 0; i <  s.hitting.size(); i++)
             {
-                returnStr.append("time," + s.hitting[i].first + ",vals," + std::to_string(s.hitting[i].second)+ "\n");
-                Activity_Data << "time," << s.hitting[i].first << ",vals," << s.hitting[i].second << "\n";
+                returnStr.append(s.hitting[i].first + "," + std::to_string(s.hitting[i].second)+ "\n");
+                Activity_Data << s.hitting[i].first << "," << s.hitting[i].second << "\n";
             }
+
+            returnStr.append("Hitting-Data-FrameDiff\n");
+            Activity_Data << "Hitting-Data-FrameDiff\n";
+            for(unsigned int i = 0; i <  s.hittingData_fdiff.size(); i++)
+            {
+                returnStr.append(s.hittingData_fdiff[i].first + "," + std::to_string(s.hittingData_fdiff[i].second)+ "\n");
+                Activity_Data << s.hittingData_fdiff[i].first << "," << s.hittingData_fdiff[i].second << "\n";
+            }
+            returnStr.append("Tugging-Data-FrameDiff\n");
+            Activity_Data << "Tugging-Data-FrameDiff\n";
+            for(unsigned int i = 0; i <  s.tuggingData.size(); i++)
+            {
+                returnStr.append(s.tuggingData[i].first + "\n");
+                Activity_Data << s.tuggingData[i].first << "\n";
+                vector<vector <Point> > contourData = s.tuggingData[i].second;
+                for(unsigned int p = 0; p <  contourData.size(); p++)
+                {
+                    returnStr.append("[");
+                    Activity_Data << "[";
+                    for(unsigned int k = 0; k <  contourData[p].size(); k++)
+                    {
+                        returnStr.append(sb + std::to_string(contourData[p][k].x) + "," + std::to_string(contourData[p][k].y) + ")");
+                        Activity_Data << "(" << contourData[p][k].x << "," << contourData[p][k].y << ")";
+                    }
+                    returnStr.append("]\n");
+                    Activity_Data << "]\n";
+                }
+            }
+
             returnStr.append("Tracking-Data\n");
             Activity_Data << "Tracking-Data\n";
             for(unsigned int i = 0; i <  s.trackingData.size(); i++)
             {
-                returnStr.append("time," + s.trackingData[i].first + ",vals," + std::to_string(s.trackingData[i].second.first) + "," + std::to_string(s.trackingData[i].second.second) + "\n");
-                Activity_Data << "time," << s.trackingData[i].first << ",vals," << s.trackingData[i].second.first << "," << s.trackingData[i].second.second << "\n";
+                returnStr.append(s.trackingData[i].first + "," + std::to_string(s.trackingData[i].second.first) + "," + std::to_string(s.trackingData[i].second.second) + "\n");
+                Activity_Data << s.trackingData[i].first << "," << s.trackingData[i].second.first << "," << s.trackingData[i].second.second << "\n";
             }
         }
         else if(type == "picking")
         {
             returnStr.append("\nActivity,Picking\n" + string("Start-Time,") + p.startTime + "\nEnd-Time," + p.endTime);
-            Activity_Data << "\nActivity,Picking\n" << "Start-Time," << p.startTime << "End-Time," << p.endTime << endl;
+            Activity_Data << "\nActivity,Picking\n" << "Start-Time," << p.startTime << "\nEnd-Time," << p.endTime << endl;
 
             returnStr.append("From-Peg," + std::to_string(p.from_peg) + "\n");
             Activity_Data << "From-Peg," << p.from_peg << endl;
 
-            returnStr.append("Hitting-Data\n");
-            Activity_Data << "Hitting-Data\n";
+            returnStr.append("Hitting-Data-Sensor\n");
+            Activity_Data << "Hitting-Data-Sensor\n";
             for(unsigned int i = 0; i <  p.hitting.size(); i++)
             {
-                returnStr.append("time," + p.hitting[i].first + ",vals," + std::to_string(p.hitting[i].second)+ "\n");
-                Activity_Data << "time," << p.hitting[i].first << ",vals," << p.hitting[i].second << "\n";
+                returnStr.append(p.hitting[i].first + "," + std::to_string(p.hitting[i].second)+ "\n");
+                Activity_Data << p.hitting[i].first << "," << p.hitting[i].second << "\n";
             }
+
+            returnStr.append("Hitting-Data-FrameDiff\n");
+            Activity_Data << "Hitting-Data-FrameDiff\n";
+            for(unsigned int i = 0; i <  p.hittingData_fdiff.size(); i++)
+            {
+                returnStr.append(p.hittingData_fdiff[i].first + "," + std::to_string(p.hittingData_fdiff[i].second)+ "\n");
+                Activity_Data << p.hittingData_fdiff[i].first << "," << p.hittingData_fdiff[i].second << "\n";
+            }
+            returnStr.append("Tugging-Data-FrameDiff\n");
+            Activity_Data << "Tugging-Data-FrameDiff\n";
+            for(unsigned int i = 0; i <  p.tuggingData.size(); i++)
+            {
+                returnStr.append(p.tuggingData[i].first + "\n");
+                Activity_Data << p.tuggingData[i].first << "\n";
+                vector<vector <Point> > contourData = p.tuggingData[i].second;
+                for(unsigned int p = 0; p <  contourData.size(); p++)
+                {
+                    returnStr.append("[");
+                    Activity_Data << "[";
+                    for(unsigned int k = 0; k <  contourData[p].size(); k++)
+                    {
+                        returnStr.append(sb + std::to_string(contourData[p][k].x) + "," + std::to_string(contourData[p][k].y) + ")");
+                        Activity_Data << "(" << contourData[p][k].x << "," << contourData[p][k].y << ")";
+                    }
+                    returnStr.append("]\n");
+                    Activity_Data << "]\n";
+                }
+            }
+
 
             returnStr.append("Tracking-Data\n");
             Activity_Data << "Tracking-Data\n";
             for(unsigned int i = 0; i <  p.trackingData.size(); i++)
             {
-                returnStr.append("time," + p.trackingData[i].first + ",vals," + std::to_string(p.trackingData[i].second.first) + "," + std::to_string(p.trackingData[i].second.second) + "\n");
-                Activity_Data << "time," << p.trackingData[i].first << ",vals," << p.trackingData[i].second.first << "," << p.trackingData[i].second.second << "\n";
+                returnStr.append(p.trackingData[i].first + "," + std::to_string(p.trackingData[i].second.first) + "," + std::to_string(p.trackingData[i].second.second) + "\n");
+                Activity_Data << p.trackingData[i].first << "," << p.trackingData[i].second.first << "," << p.trackingData[i].second.second << "\n";
             }
-
         }
         else if(type == "moving")
         {
             returnStr.append("\nActivity,Moving\n" + string("Start-Time,") + m.startTime + "\nEnd-Time," + m.endTime);
             Activity_Data << "\nActivity,Moving\n" << "Start-Time," << m.startTime << "\nEnd-Time," << m.endTime << endl;
 
-            returnStr.append("From-Peg," + std::to_string(m.from_peg) + ",To-Peg," + std::to_string(m.to_peg));
-            Activity_Data << "From-Peg," << m.from_peg <<  ",To-Peg," << m.to_peg << endl;
+            returnStr.append("From-Peg," + std::to_string(m.from_peg) + "\nTo-Peg," + std::to_string(m.to_peg));
+            Activity_Data << "From-Peg," << m.from_peg <<  "\nTo-Peg," << m.to_peg << endl;
 
-            returnStr.append("Hitting-Data\n");
-            Activity_Data << "Hitting-Data\n";
+            returnStr.append("Hitting-Data-Sensor\n");
+            Activity_Data << "Hitting-Data-Sensor\n";
             for(unsigned int i = 0; i <  m.hitting.size(); i++)
             {
-                returnStr.append("time," + m.hitting[i].first + ",vals," + std::to_string(m.hitting[i].second) + "\n");
-                Activity_Data << "time," << m.hitting[i].first << ",vals," << m.hitting[i].second << "\n";
+                returnStr.append(m.hitting[i].first + "," + std::to_string(m.hitting[i].second) + "\n");
+                Activity_Data << m.hitting[i].first << "," << m.hitting[i].second << "\n";
+            }
+
+            returnStr.append("Hitting-Data-FrameDiff\n");
+            Activity_Data << "Hitting-Data-FrameDiff\n";
+            for(unsigned int i = 0; i <  m.hittingData_fdiff.size(); i++)
+            {
+                returnStr.append(m.hittingData_fdiff[i].first + "," + std::to_string(m.hittingData_fdiff[i].second)+ "\n");
+                Activity_Data << m.hittingData_fdiff[i].first << "," << m.hittingData_fdiff[i].second << "\n";
+            }
+            returnStr.append("Tugging-Data-FrameDiff\n");
+            Activity_Data << "Tugging-Data-FrameDiff\n";
+            for(unsigned int i = 0; i <  m.tuggingData.size(); i++)
+            {
+                returnStr.append(m.tuggingData[i].first + "\n");
+                Activity_Data << m.tuggingData[i].first << "\n";
+                vector<vector <Point> > contourData = m.tuggingData[i].second;
+                for(unsigned int p = 0; p <  contourData.size(); p++)
+                {
+                    returnStr.append("[");
+                    Activity_Data << "[";
+                    for(unsigned int k = 0; k <  contourData[p].size(); k++)
+                    {
+                        returnStr.append(sb + std::to_string(contourData[p][k].x) + "," + std::to_string(contourData[p][k].y) + ")");
+                        Activity_Data << "(" << contourData[p][k].x << "," << contourData[p][k].y << ")";
+                    }
+                    returnStr.append("]\n");
+                    Activity_Data << "]\n";
+                }
             }
             returnStr.append("Tracking-Data\n");
-            Activity_Data << "Tracking Data\n";
+            Activity_Data << "Tracking-Data\n";
             for(unsigned int i = 0; i <  m.trackingData.size(); i++)
             {
-                returnStr.append("time," + m.trackingData[i].first + ",vals," + std::to_string(m.trackingData[i].second.first) + "," + std::to_string(m.trackingData[i].second.second) + "\n");
-                Activity_Data << "time," << m.trackingData[i].first << ",vals," << m.trackingData[i].second.first << "," << m.trackingData[i].second.second << "\n";
+                returnStr.append(m.trackingData[i].first + "," + std::to_string(m.trackingData[i].second.first) + "," + std::to_string(m.trackingData[i].second.second) + "\n");
+                Activity_Data << m.trackingData[i].first << "," << m.trackingData[i].second.first << "," << m.trackingData[i].second.second << "\n";
             }
         }
         return returnStr;
@@ -252,7 +413,7 @@ struct Activity
         if(type == "stationary")
         {
             returnStr.append("\nActivity,Stationary\n" + string("Start-Time,") + s.startTime + "\nEnd-Time," + s.endTime);
-            returnStr.append("Hitting-Data\n");
+            returnStr.append("Hitting-Data-Sensor\n");
             for(unsigned int i = 0; i <  s.hitting.size(); i++)
             {
                 returnStr.append("time," + s.hitting[i].first + ",vals," + std::to_string(s.hitting[i].second) + "\n");
@@ -267,7 +428,7 @@ struct Activity
         {
             returnStr.append("\nActivity,Picking\n" + string("Start-Time,") + p.startTime + "\nEnd-Time," + p.endTime);
             returnStr.append("From-Peg," + std::to_string(p.from_peg) + "\n");
-            returnStr.append("Hitting-Data\n");
+            returnStr.append("Hitting-Data-Sensor\n");
             for(unsigned int i = 0; i <  p.hitting.size(); i++)
             {
                 returnStr.append("time," + p.hitting[i].first + ",vals," + std::to_string(p.hitting[i].second) + "\n");
@@ -283,7 +444,7 @@ struct Activity
         {
             returnStr.append("\nActivity,Moving\n" + string("Start-Time,") + m.startTime + "\nEnd-Time," + m.endTime);
             returnStr.append("From-Peg," + std::to_string(m.from_peg) + ",To-Peg," + std::to_string(m.to_peg));
-            returnStr.append("Hitting-Data\n");
+            returnStr.append("Hitting-Data-Sensor\n");
             for(unsigned int i = 0; i <  m.hitting.size(); i++)
             {
                 returnStr.append("time," + m.hitting[i].first + ",vals," + std::to_string(m.hitting[i].second)+ "\n");
