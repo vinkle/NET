@@ -291,6 +291,24 @@ void qMainWindow::saveData()
     ResultString = result.write(Activity_Data);
     Activity_Data.close();
 
+    filenameActivity = saveDirectory + "/" + drName + "_" + timestamp + "_level_"+ to_string(level) +"_AuxTimeStamp.txt";
+    Activity_Data.open(filenameActivity);
+    for(uint i = 0 ; i < mConsumer_aux->timestamp_aux.size(); ++i)
+    {
+        string aa = mConsumer_aux->timestamp_aux[i] ;
+        Activity_Data << aa << endl;
+    }
+    Activity_Data.close();
+
+    filenameActivity = saveDirectory + "/" + drName + "_" + timestamp + "_level_"+ to_string(level) +"_EndoTimeStamp.txt";
+    Activity_Data.open(filenameActivity);
+    for(uint i = 0 ; i < mConsumer_endo->timestamp_endo.size(); ++i)
+    {
+        string aa = mConsumer_endo->timestamp_endo[i] ;
+        Activity_Data << aa << endl;
+    }
+    Activity_Data.close();
+
 //    if(sendtoDB)
 //    {
 //        if(!endoDB.open())

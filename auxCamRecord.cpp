@@ -1,5 +1,4 @@
 #include "auxCamRecord.h"
-
 auxCamRecord_producer::auxCamRecord_producer()
 {
     sendFrame = false;
