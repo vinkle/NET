@@ -1,6 +1,6 @@
 #include "qtopencvviewergl.h"
 #include <QOpenGLFunctions>
-//12-12-12
+
 
 QtOpencvViewerGL::QtOpencvViewerGL(QWidget *parent) :
     QOpenGLWidget(parent)

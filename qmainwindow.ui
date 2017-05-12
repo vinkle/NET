@@ -39,7 +39,7 @@
      <x>0</x>
      <y>0</y>
      <width>920</width>
-     <height>19</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -102,7 +102,7 @@ color: rgb(0, 0, 0);</string>
   </widget>
   <action name="actionStart">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/icons/images/play.png</normaloff>:/icons/images/play.png</iconset>
    </property>
    <property name="text">
@@ -120,7 +120,7 @@ color: rgb(0, 0, 0);</string>
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/icons/images/stop.png</normaloff>:/icons/images/stop.png</iconset>
    </property>
    <property name="text">
@@ -138,7 +138,7 @@ color: rgb(0, 0, 0);</string>
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/icons/images/pause.png</normaloff>:/icons/images/pause.png</iconset>
    </property>
    <property name="text">
@@ -156,7 +156,7 @@ color: rgb(0, 0, 0);</string>
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/icons/images/fullscreen.png</normaloff>:/icons/images/fullscreen.png</iconset>
    </property>
    <property name="text">
@@ -297,8 +297,6 @@ color: rgb(0, 0, 0);</string>
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

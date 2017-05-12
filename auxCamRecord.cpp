@@ -800,8 +800,6 @@ void auxCamRecord_producer::process()
     //emit sendEvalData(trackingData);
     emit finished();
 }
-
-
 // consumer functuions
 auxCamRecord_consumer::auxCamRecord_consumer()
 {
